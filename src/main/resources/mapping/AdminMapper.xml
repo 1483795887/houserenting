@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.houserenting.mapper.AdminMapper">
+
+	<resultMap type="com.houserenting.entity.Admin" id="AdminResult">
+		<result property="aid" column="aid" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="tel" column="tel"/>
+	</resultMap>
+
+	<select id="getCount" resultType="Integer">
+		select count(*) from admin
+	</select>
+
+	<select id="sel" resultMap="AdminResult" parameterType="Integer">
+		select * from admin where aid=#{value}
+	</select>
+	<select id="getAdminByName" resultMap="AdminResult" parameterType="String">
+		select * from admin where username=#{value};
+	</select>
+	<update id="updatePassword" parameterType="com.houserenting.entity.Costumer">
+		update admin set password=#{password} where aid=#{aid}
+	</update>
+	<insert id="add" parameterType="com.houserenting.entity.Admin">
+		<selectKey keyColumn="aid" keyProperty="aid" resultType="Integer" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+		insert into admin ( username, password, tel)
+		values (#{username},#{password},#{tel})
+	</insert>
+
+	<delete id="delete" parameterType="Integer">
+		delete from admin where aid=#{value}
+	</delete>
+</mapper> 
