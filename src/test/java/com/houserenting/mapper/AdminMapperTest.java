@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 public class AdminMapperTest {
 
-    Admin admin;
+    private Admin admin;
 
     @Autowired
     AdminMapper mapper;
@@ -69,7 +69,7 @@ public class AdminMapperTest {
         mapper.add(admin1);
     }
 
-    boolean equal(Admin admin1, Admin admin2){
+    private boolean equal(Admin admin1, Admin admin2){
         return admin1.getUsername().equals(admin2.getUsername())
                 &&admin1.getPassword().equals(admin2.getPassword())
                 &&admin1.getTel().equals(admin2.getTel());
@@ -94,7 +94,7 @@ public class AdminMapperTest {
     public void updateSuccess(){
         admin.setPassword("1234");
         mapper.updatePassword(admin);
-        Admin costumer1 = mapper.sel(admin.getAid());
-        assertEquals(costumer1.getPassword(),admin.getPassword());
+        Admin customer1 = mapper.sel(admin.getAid());
+        assertEquals(customer1.getPassword(),admin.getPassword());
     }
 }

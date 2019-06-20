@@ -1,10 +1,10 @@
 package com.houserenting.entity;
 
 public class Admin {
-    int aid;
-    String username;
-    String password;
-    String tel;
+    private int aid;
+    private String username;
+    private String password;
+    private String tel;
 
     public Admin() {
         username = "";
@@ -26,7 +26,7 @@ public class Admin {
 
     public void setUsername(String username) {
         if (username == null)
-            username = "";
+            this.username = "";
         else
             this.username = username;
     }
@@ -37,7 +37,7 @@ public class Admin {
 
     public void setPassword(String password) {
         if (password == null)
-            password = "";
+            this.password = "";
         else
             this.password = password;
     }
@@ -48,7 +48,7 @@ public class Admin {
 
     public void setTel(String tel) {
         if (tel == null)
-            tel = "";
+            this.tel = "";
         else
             this.tel = tel;
     }

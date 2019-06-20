@@ -21,7 +21,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getAdminByName" resultMap="AdminResult" parameterType="String">
 		select * from admin where username=#{value};
 	</select>
-	<update id="updatePassword" parameterType="com.houserenting.entity.Costumer">
+	<update id="updatePassword" parameterType="com.houserenting.entity.Customer">
 		update admin set password=#{password} where aid=#{aid}
 	</update>
 	<insert id="add" parameterType="com.houserenting.entity.Admin">

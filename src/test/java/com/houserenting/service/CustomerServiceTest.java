@@ -1,6 +1,6 @@
 package com.houserenting.service;
 
-import com.houserenting.entity.Costumer;
+import com.houserenting.entity.Customer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,22 +12,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CostumerServiceTest {
+public class CustomerServiceTest {
 
     @Autowired
-    CostumerService service;
+    CustomerService service;
 
-    Costumer costumer;
+    private Customer customer;
 
     @Before
     @Transactional
     public void setUp() throws Exception {
-        costumer = new Costumer();
-        costumer.setUsername("username1");
-        costumer.setPassword("123456");
-        costumer.setTel("18696104532");
+        customer = new Customer();
+        customer.setUsername("username1");
+        customer.setPassword("123456");
+        customer.setTel("18696104532");
 
-        service.signup(costumer);
+        service.signup(customer);
     }
 
     @Transactional
@@ -91,10 +91,10 @@ public class CostumerServiceTest {
     @Test
     @Transactional
     public void changeSex(){
-        costumer.setSex(Costumer.FEMALE);
-        service.updateInfo(costumer);
-        Costumer costumer1 = service.getCostumer(costumer.getCid());
-        assertEquals(costumer1.getSex(), costumer.getSex());
+        customer.setSex(Customer.FEMALE);
+        service.updateInfo(customer);
+        Customer customer1 = service.getCustomer(customer.getCid());
+        assertEquals(customer1.getSex(), customer.getSex());
     }
 }
 

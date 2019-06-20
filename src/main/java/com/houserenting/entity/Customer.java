@@ -1,20 +1,20 @@
 package com.houserenting.entity;
 
-public class Costumer {
+public class Customer {
 
     public final static int MALE = 0;
     public final static int FEMALE = 1;
 
-    int cid;
-    String username;
-    String password;
-    String realname;
-    int sex;
-    int age;
-    String address;
-    String tel;
+    private int cid;
+    private String username;
+    private String password;
+    private String realname;
+    private int sex;
+    private int age;
+    private String address;
+    private String tel;
 
-    public Costumer() {
+    public Customer() {
         username = "";
         password = "";
         realname = "";
@@ -61,7 +61,7 @@ public class Costumer {
 
     public void setRealname(String realname) {
         if (realname == null)
-            realname = "";
+            this.realname = "";
         else
             this.realname = realname;
     }
@@ -104,7 +104,7 @@ public class Costumer {
 
     public void setTel(String tel) {
         if (tel == null)
-            tel = "";
+            this.tel = "";
         else
             this.tel = tel;
     }

@@ -1,7 +1,7 @@
 package com.houserenting.controller;
 
-import com.houserenting.entity.Costumer;
-import com.houserenting.service.CostumerService;
+import com.houserenting.entity.Customer;
+import com.houserenting.service.CustomerService;
 import com.houserenting.utils.MsgMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/costumer",method = RequestMethod.POST)
-public class CostumerController {
+@RequestMapping(value = "/customer",method = RequestMethod.POST)
+public class CustomerController {
     @Autowired
-    CostumerService service;
+    CustomerService service;
 
     @RequestMapping(value = "/confirm")
     public Map<String, Object> confirm(String username) {
@@ -30,13 +30,13 @@ public class CostumerController {
     }
 
     @RequestMapping(value = "/signup")
-    public Map<String,Object> signup(Costumer costumer){
-        boolean result = service.signup(costumer);
+    public Map<String,Object> signup(Customer customer){
+        boolean result = service.signup(customer);
 
         MsgMap msg = new MsgMap();
         if(result){
             msg.putSuccessCode();
-            msg.put("user", costumer);
+            msg.put("user", customer);
         }else
             msg.putFailedCode("signUpFailed");
 
@@ -45,12 +45,12 @@ public class CostumerController {
 
     @RequestMapping(value = "/login")
     public Map<String,Object> login(String username, String password){
-        Costumer costumer = service.login(username,password);
+        Customer customer = service.login(username,password);
 
         MsgMap msg = new MsgMap();
-        if(costumer != null){
+        if(customer != null){
             msg.putSuccessCode();
-            msg.put("user",costumer);
+            msg.put("user",customer);
         }else
             msg.putFailedCode("loginFailed");
 
@@ -58,20 +58,20 @@ public class CostumerController {
     }
 
     @RequestMapping("/updateInfo")
-    public Map<String, Object> updateInfo(Costumer costumer){
-        Costumer newCostumer = service.getCostumer(costumer.getCid());
+    public Map<String, Object> updateInfo(Customer customer){
+        Customer newCustomer = service.getCustomer(customer.getCid());
 
-        newCostumer.setSex(costumer.getSex());
-        newCostumer.setTel(costumer.getTel());
-        newCostumer.setAge(costumer.getAge());
-        newCostumer.setRealname(costumer.getRealname());
-        newCostumer.setAddress(costumer.getAddress());
+        newCustomer.setSex(customer.getSex());
+        newCustomer.setTel(customer.getTel());
+        newCustomer.setAge(customer.getAge());
+        newCustomer.setRealname(customer.getRealname());
+        newCustomer.setAddress(customer.getAddress());
 
-        service.updateInfo(newCostumer);
+        service.updateInfo(newCustomer);
 
         MsgMap msg = new MsgMap();
         msg.putSuccessCode();
-        msg.put("user",newCostumer);
+        msg.put("user",newCustomer);
 
         return msg;
 
