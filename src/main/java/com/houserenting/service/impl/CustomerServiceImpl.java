@@ -18,7 +18,7 @@ public class CustomerServiceImpl implements CustomerService {
         try {
             mapper.add(customer);
             result = true;
-        } catch (DataIntegrityViolationException e) {
+        } catch (Exception e) {
             result = false;
             e.printStackTrace();
         }

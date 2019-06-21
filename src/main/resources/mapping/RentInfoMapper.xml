@@ -22,6 +22,10 @@
         where rid = #{rid}
     </select>
 
+    <select id="getByPage" resultMap="RentInfoResult" parameterType="map">
+        select * from rent_info limit #{begin},#{end}
+    </select>
+
     <insert id="add" parameterType="com.houserenting.entity.RentInfo">
         <selectKey keyColumn="rid" keyProperty="rid" resultType="Integer" order="AFTER">
             select last_insert_id()

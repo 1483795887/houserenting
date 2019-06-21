@@ -24,7 +24,7 @@ public class RentInfoServiceImpl implements RentInfoService {
         try{
             rentInfoMapper.add(rentInfo);
             result = true;
-        }catch (DataIntegrityViolationException e){
+        }catch (Exception e){
             result = false;
             e.printStackTrace();;
         }

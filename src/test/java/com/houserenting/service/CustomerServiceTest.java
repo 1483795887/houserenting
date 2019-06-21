@@ -20,7 +20,7 @@ public class CustomerServiceTest {
     private Customer customer;
 
     @Before
-    @Transactional
+    //@Transactional
     public void setUp() throws Exception {
         customer = new Customer();
         customer.setUsername("username1");
@@ -30,6 +30,15 @@ public class CustomerServiceTest {
         service.signup(customer);
     }
 
+    @Test
+    //@Transactional
+    public void nameAlreadyExist(){
+        Customer customer1 = new Customer();
+        customer1.setUsername("username1");
+        assertFalse(service.signup(customer1));
+    }
+
+    @Test
     @Transactional
     public void usernameNotExistFail(){
         assertNull(service.login("usr","123456"));

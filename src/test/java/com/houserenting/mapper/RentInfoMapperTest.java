@@ -11,6 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class RentInfoMapperTest {
@@ -34,8 +38,6 @@ public class RentInfoMapperTest {
         customer.setAddress("wuhan");
         customer.setAge(24);
         customerMapper.add(customer);
-
-
     }
 
     @Test
@@ -88,5 +90,24 @@ public class RentInfoMapperTest {
         Customer customer1 = customerMapper.sel(rentInfo1.getCid());
 
         assertEquals(customer1.getUsername(),customer.getUsername());
+    }
+
+    @Test
+    @Transactional
+    public void getRentInfosWhenCountIsNotEnough(){
+        int count = 5;
+        for(int i = 0 ;i < count;i++){
+            RentInfo rentInfo = new RentInfo();
+            rentInfo.setCid(customer.getCid());
+            rentInfoMapper.add(rentInfo);
+        }
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("begin",0);
+        map.put("size", 10);
+
+        List<RentInfo> rentInfos = rentInfoMapper.getByPage(map);
+
+        assertEquals(rentInfos.size(), count);
     }
 }

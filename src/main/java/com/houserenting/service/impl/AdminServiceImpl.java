@@ -20,7 +20,7 @@ public class AdminServiceImpl implements AdminService {
         try{
             mapper.add(admin);
             result = true;
-        }catch (DataIntegrityViolationException e){
+        }catch (Exception e){
             e.printStackTrace();
             result = false;
         }
