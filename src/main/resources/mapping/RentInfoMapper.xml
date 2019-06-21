@@ -15,11 +15,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="pic" property="pic"/>
 		<result column="publish_date" property="publishDate"/>
 		<association property="customer" javaType="com.houserenting.entity.Customer"
-			select="selCustomerByCid" column="cid"/>
+			select="selectCustomerByCid" column="cid"/>
 	</resultMap>
 
 	<select id="sel" resultMap="RentInfoResult" parameterType="Integer">
 		select * from rent_info where rid=#{rid}
 	</select>
+	
+	<select id="selectCustomerByCid" resultType="com.houserenting.entity.Customer"
+			parameterType="int">
+		select * from customer where cid=#{cid}
+	</select>
+
+	<insert id="add" parameterType="com.houserenting.entity.RentInfo">
+		<selectKey keyColumn="rid" keyProperty="rid" resultType="Integer" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+		insert into rent_info
+			(layout, renovation, price, address, liaison, phone, pic, publish_date, cid)
+			values (#{layout},#{renovation},#{price},
+			#{address},#{liaison},#{phone},#{pic},#{publishDate},#{customer.cid})
+	</insert>
 
 </mapper> 

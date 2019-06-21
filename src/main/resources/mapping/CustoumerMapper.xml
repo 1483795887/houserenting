@@ -14,8 +14,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="address" column="address"/>
 		<result property="tel" column="tel"/>
 	</resultMap>
-
-
 	<select id="sel" resultMap="CustomerResult">
 		select * from customer where cid=#{cid};
 	</select>
