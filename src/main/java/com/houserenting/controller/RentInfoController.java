@@ -1,5 +1,6 @@
 package com.houserenting.controller;
 
+import com.houserenting.entity.Customer;
 import com.houserenting.entity.RentInfo;
 import com.houserenting.service.CustomerService;
 import com.houserenting.service.RentInfoService;
@@ -21,7 +22,7 @@ public class RentInfoController {
     @Autowired
     CustomerService customerService;
 
-    @RequestMapping(value = "/addRentInfo")
+    @RequestMapping(value = "/add")
     public Map<String, Object> addRentInfo(@RequestBody RentInfo rentInfo){
         boolean result = rentInfoService.addRentInfo(rentInfo);
         MsgMap msg = new MsgMap();
@@ -33,4 +34,20 @@ public class RentInfoController {
             msg.putFailedCode("addRentInfo failed");
         return msg;
     }
+
+    @RequestMapping(value = "/show")
+    public Map<String,Object> showRentInfo(@RequestBody Map o){
+        RentInfo rentInfo = rentInfoService.getRentInfo((int)o.get("rid"));
+        Customer customer = customerService.getCustomer(rentInfo.getCid());
+        MsgMap msg = new MsgMap();
+        if(rentInfo == null || customer == null){
+            msg.putFailedCode("failed to get rent info");
+        }else{
+            msg.putSuccessCode();
+            msg.put("rentinfo",rentInfo);
+            msg.put("customer",customer);
+        }
+        return msg;
+    }
+
 }
