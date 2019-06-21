@@ -6,5 +6,4 @@ import com.houserenting.entity.RentInfo;
 public interface RentInfoService {
     boolean addRentInfo(RentInfo rentInfo);
     RentInfo getRentInfo(int rid);
-    Customer getCustomerByCid(int cid);
 }

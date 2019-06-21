@@ -35,9 +35,4 @@ public class RentInfoServiceImpl implements RentInfoService {
     public RentInfo getRentInfo(int rid) {
         return rentInfoMapper.sel(rid);
     }
-
-    @Override
-    public Customer getCustomerByCid(int cid) {
-        return customerMapper.sel(cid);
-    }
 }

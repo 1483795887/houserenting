@@ -4,10 +4,7 @@ import com.houserenting.entity.Admin;
 import com.houserenting.service.AdminService;
 import com.houserenting.utils.MsgMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -18,7 +15,7 @@ public class AdminController {
     AdminService service;
 
     @RequestMapping("/confirm")
-    public Map<String,Object> confirm(@RequestParam(value = "username") String username){
+    public Map<String,Object> confirm(@RequestBody String username){
         boolean result = service.confirm(username);
         MsgMap msg = new MsgMap();
         if(!result)
@@ -29,7 +26,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/signup")
-    public Map<String,Object> signup(Admin admin){
+    public Map<String,Object> signup(@RequestBody Admin admin){
         boolean result = service.signup(admin);
 
         MsgMap msg = new MsgMap();
@@ -43,7 +40,9 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/login")
-    public Map<String,Object> login(String username, String password){
+    public Map<String,Object> login(@RequestBody Map o){
+        String username = (String)o.get("username");
+        String password = (String)o.get("password");
         Admin admin = service.login(username,password);
 
         MsgMap msg = new MsgMap();
@@ -57,7 +56,12 @@ public class AdminController {
     }
 
     @RequestMapping("/change")
-    public Map<String,Object> change(String username, String tel, String password, String newPassword){
+    public Map<String,Object> change(@RequestBody Map o){
+        String username = (String)o.get("username");
+        String tel = (String)o.get("tel");
+        String password = (String)o.get("password");
+        String newPassword = (String)o.get("newPassword");
+
         boolean result = service.change(username, tel, password, newPassword);
 
         MsgMap msg = new MsgMap();

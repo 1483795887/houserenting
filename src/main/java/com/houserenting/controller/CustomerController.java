@@ -4,10 +4,7 @@ import com.houserenting.entity.Customer;
 import com.houserenting.service.CustomerService;
 import com.houserenting.utils.MsgMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +16,7 @@ public class CustomerController {
     CustomerService service;
 
     @RequestMapping(value = "/confirm")
-    public Map<String, Object> confirm(String username) {
+    public Map<String, Object> confirm(@RequestBody String username) {
         boolean result = service.confirm(username);
         MsgMap msg = new MsgMap();
         if(!result)
@@ -30,7 +27,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/signup")
-    public Map<String,Object> signup(Customer customer){
+    public Map<String,Object> signup(@RequestBody Customer customer){
         boolean result = service.signup(customer);
 
         MsgMap msg = new MsgMap();
@@ -44,7 +41,9 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/login")
-    public Map<String,Object> login(String username, String password){
+    public Map<String,Object> login(@RequestBody Map o){
+        String username = (String)o.get("username");
+        String password = (String)o.get("password");
         Customer customer = service.login(username,password);
 
         MsgMap msg = new MsgMap();
@@ -58,7 +57,7 @@ public class CustomerController {
     }
 
     @RequestMapping("/updateInfo")
-    public Map<String, Object> updateInfo(Customer customer){
+    public Map<String, Object> updateInfo(@RequestBody Customer customer){
         Customer newCustomer = service.getCustomer(customer.getCid());
 
         newCustomer.setSex(customer.getSex());
@@ -78,7 +77,11 @@ public class CustomerController {
     }
 
     @RequestMapping("/change")
-    public Map<String,Object> change(String username, String tel, String password, String newPassword){
+    public Map<String,Object> change(@RequestBody Map o){
+        String username = (String)o.get("username");
+        String tel = (String)o.get("tel");
+        String password = (String)o.get("password");
+        String newPassword = (String)o.get("newPassword");
         boolean result = service.change(username, tel, password, newPassword);
 
         MsgMap msg = new MsgMap();
