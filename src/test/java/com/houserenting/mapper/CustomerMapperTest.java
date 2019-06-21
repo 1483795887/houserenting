@@ -42,12 +42,6 @@ public class CustomerMapperTest {
 
     @Test
     @Transactional
-    public void testGetCount() {
-        assertEquals(1, mapper.getCount());
-    }
-
-    @Test
-    @Transactional
     public void afterAddCountIsRight() {
         int count = mapper.getCount();
         Customer customer1 = new Customer();

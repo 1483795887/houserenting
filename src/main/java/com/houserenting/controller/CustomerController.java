@@ -16,8 +16,8 @@ public class CustomerController {
     CustomerService service;
 
     @RequestMapping(value = "/confirm")
-    public Map<String, Object> confirm(@RequestBody String username) {
-        boolean result = service.confirm(username);
+    public Map<String, Object> confirm(@RequestBody Map o) {
+        boolean result = service.confirm((String)o.get("username"));
         MsgMap msg = new MsgMap();
         if(!result)
             msg.putSuccessCode();

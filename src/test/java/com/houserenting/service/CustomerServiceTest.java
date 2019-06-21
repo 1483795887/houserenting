@@ -20,7 +20,7 @@ public class CustomerServiceTest {
     private Customer customer;
 
     @Before
-    //@Transactional
+    @Transactional
     public void setUp() throws Exception {
         customer = new Customer();
         customer.setUsername("username1");
@@ -31,7 +31,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    //@Transactional
+    @Transactional
     public void nameAlreadyExist(){
         Customer customer1 = new Customer();
         customer1.setUsername("username1");
