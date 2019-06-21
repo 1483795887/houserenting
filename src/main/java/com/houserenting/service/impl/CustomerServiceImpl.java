@@ -9,8 +9,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
+    private final CustomerMapper mapper;
+
     @Autowired
-    CustomerMapper mapper;
+    public CustomerServiceImpl(CustomerMapper mapper) {
+        this.mapper = mapper;
+    }
 
     @Override
     public boolean signup(Customer customer) {
@@ -20,7 +24,6 @@ public class CustomerServiceImpl implements CustomerService {
             result = true;
         } catch (Exception e) {
             result = false;
-            e.printStackTrace();
         }
         return result;
     }

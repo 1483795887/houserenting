@@ -10,5 +10,6 @@ import java.util.Map;
 public interface RentInfoMapper {
     RentInfo sel(int rid);
     void add(RentInfo rentInfo);
-    List<RentInfo> getByPage(Map map);
+    List<RentInfo> getByPage(Map<String,Object> map);
+    int getCount();
 }

@@ -11,43 +11,65 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/rentinfo",method = RequestMethod.POST)
+@RequestMapping(value = "/rentinfo", method = RequestMethod.POST)
 public class RentInfoController {
-    @Autowired
-    RentInfoService rentInfoService;
+    private final RentInfoService rentInfoService;
+
+    private final CustomerService customerService;
 
     @Autowired
-    CustomerService customerService;
+    public RentInfoController(RentInfoService rentInfoService, CustomerService customerService) {
+        this.rentInfoService = rentInfoService;
+        this.customerService = customerService;
+    }
 
     @RequestMapping(value = "/add")
-    public Map<String, Object> addRentInfo(@RequestBody RentInfo rentInfo){
+    public Map<String, Object> addRentInfo(@RequestBody RentInfo rentInfo) {
         boolean result = rentInfoService.addRentInfo(rentInfo);
         MsgMap msg = new MsgMap();
-        if(result){
+        if (result) {
             msg.putSuccessCode();
             msg.put("rentinfo", rentInfo);
-        }
-        else
+        } else
             msg.putFailedCode("addRentInfo failed");
         return msg;
     }
 
-    @RequestMapping(value = "/show")
-    public Map<String,Object> showRentInfo(@RequestBody Map o){
-        RentInfo rentInfo = rentInfoService.getRentInfo((int)o.get("rid"));
-        Customer customer = customerService.getCustomer(rentInfo.getCid());
+    @RequestMapping(value = "/showdetail")
+    public Map<String, Object> showDetail(@RequestBody Map o) {
         MsgMap msg = new MsgMap();
-        if(rentInfo == null || customer == null){
-            msg.putFailedCode("failed to get rent info");
-        }else{
-            msg.putSuccessCode();
-            msg.put("rentinfo",rentInfo);
-            msg.put("customer",customer);
+        RentInfo rentInfo = rentInfoService.getRentInfo((int) o.get("rid"));
+        if(rentInfo == null)
+            msg.putFailedCode("can't get rent info");
+        else{
+            Customer customer = customerService.getCustomer(rentInfo.getCid());
+            if ( customer == null) {
+                msg.putFailedCode("can't get customer of this rent");
+            } else {
+                msg.putSuccessCode();
+                msg.put("rentinfo", rentInfo);
+                msg.put("customer", customer);
+            }
         }
+
         return msg;
     }
 
+
+    @RequestMapping(value = "/rentinfos")
+    public Map<String, Object> showRentInfos(@RequestBody Map o) {
+        int page = (int) o.get("page");
+        int size = (int) o.get("size");
+        List<RentInfo> rentInfoList = rentInfoService.getRentInfos(page, size);
+        MsgMap msg = new MsgMap();
+        msg.putSuccessCode();
+        msg.put("list",rentInfoList);
+
+        return msg;
+
+    }
 }

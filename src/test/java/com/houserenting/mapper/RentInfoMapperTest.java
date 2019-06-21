@@ -28,7 +28,7 @@ public class RentInfoMapperTest {
     private RentInfo rentInfo;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp(){
         customer = new Customer();
         customer.setUsername("username");
         customer.setPassword("password");
@@ -44,6 +44,12 @@ public class RentInfoMapperTest {
     @Transactional
     public void selRandomWhenNotDatabaseIsEmpty() {
         assertNull(rentInfoMapper.sel(100));
+    }
+
+    @Test
+    @Transactional
+    public void getRentInfoNullWhenNotExist(){
+        assertNull(rentInfoMapper.sel(0));
     }
 
     @Test
@@ -92,15 +98,21 @@ public class RentInfoMapperTest {
         assertEquals(customer1.getUsername(),customer.getUsername());
     }
 
+    private void addTestData(int count){
+        for(int i = 0 ;i < count ;i ++){
+            RentInfo rentInfo = new RentInfo();
+            rentInfo.setHuxing(String.format("%d",i));
+            rentInfo.setCid(customer.getCid());
+
+            rentInfoMapper.add(rentInfo);
+        }
+    }
+
     @Test
     @Transactional
     public void getRentInfosWhenCountIsNotEnough(){
         int count = 5;
-        for(int i = 0 ;i < count;i++){
-            RentInfo rentInfo = new RentInfo();
-            rentInfo.setCid(customer.getCid());
-            rentInfoMapper.add(rentInfo);
-        }
+        addTestData(count);
 
         Map<String,Object> map = new HashMap<>();
         map.put("begin",0);
@@ -109,5 +121,29 @@ public class RentInfoMapperTest {
         List<RentInfo> rentInfos = rentInfoMapper.getByPage(map);
 
         assertEquals(rentInfos.size(), count);
+    }
+
+    @Test
+    @Transactional
+    public void getRentInfosWhenCountIsEnough(){
+        int count = 20;
+
+        addTestData(count);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("begin",10);
+        map.put("size", 10);
+
+        List<RentInfo> rentInfos = rentInfoMapper.getByPage(map);
+        assertEquals(rentInfos.get(0).getHuxing(), "10");
+    }
+
+    @Test
+    @Transactional
+    public void testGetCountOfRentInfos(){
+        int count = 10;
+        addTestData(count);
+
+        assertEquals(count, rentInfoMapper.getCount());
     }
 }

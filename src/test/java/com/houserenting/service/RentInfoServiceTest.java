@@ -24,7 +24,7 @@ public class RentInfoServiceTest {
     private Customer customer;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp(){
         customer = new Customer();
         customer.setUsername("username1");
         customer.setPassword("123456");
@@ -77,5 +77,50 @@ public class RentInfoServiceTest {
 
         assertEquals(customer1.getUsername(), customer.getUsername());
 
+    }
+
+    private void addTestData(int count){
+        for(int i = 0 ; i < count;i++){
+            RentInfo rentInfo = new RentInfo();
+            rentInfo.setHuxing(String.format("%d",i));
+            rentInfo.setCid(customer.getCid());
+
+            service.addRentInfo(rentInfo);
+        }
+    }
+
+    @Test
+    @Transactional
+    public void getListWhenPageIsMinus(){
+        int count = 10;
+        addTestData(count);
+
+        assertEquals(0, service.getRentInfos(-1,10).size());
+    }
+
+    @Test
+    @Transactional
+    public void getListEmptyWhenSizeIsMinus(){
+        int count = 10;
+        addTestData(count);
+        assertEquals(0, service.getRentInfos(1, -1).size());
+    }
+
+    @Test
+    @Transactional
+    public void getListSizeRight(){
+        int count = 10;
+        addTestData(count);
+
+        assertEquals(4,service.getRentInfos(2, 6).size());
+    }
+
+    @Test
+    @Transactional
+    public void testGetCount(){
+        int count = 100;
+        addTestData(count);
+
+        assertEquals(count, service.getCount());
     }
 }

@@ -23,7 +23,10 @@
     </select>
 
     <select id="getByPage" resultMap="RentInfoResult" parameterType="map">
-        select * from rent_info limit #{begin},#{end}
+        select * from rent_info limit #{begin},#{size}
+    </select>
+    <select id="getCount" resultType="int">
+        select count(*) from rent_info
     </select>
 
     <insert id="add" parameterType="com.houserenting.entity.RentInfo">

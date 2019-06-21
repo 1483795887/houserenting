@@ -11,17 +11,20 @@ import com.houserenting.mapper.AdminMapper;
 @Service
 public class AdminServiceImpl implements AdminService {
 
+    private final AdminMapper mapper;
+
     @Autowired
-    AdminMapper mapper;
+    public AdminServiceImpl(AdminMapper mapper) {
+        this.mapper = mapper;
+    }
 
     @Override
     public boolean signup(Admin admin) {
-        boolean result = true;
+        boolean result;
         try{
             mapper.add(admin);
             result = true;
         }catch (Exception e){
-            e.printStackTrace();
             result = false;
         }
 
