@@ -25,6 +25,7 @@ public class RentInfoMapperTest {
 
     @Before
     public void setUp() throws Exception {
+        customer = new Customer();
         customer.setUsername("username");
         customer.setPassword("password");
         customer.setTel("18696104532");
@@ -45,31 +46,30 @@ public class RentInfoMapperTest {
 
     @Test
     @Transactional
-    public void whenAddedTheLayoutIsTheSame(){
+    public void whenAddedTheHuxingIsTheSame(){
         RentInfo rentInfo = new RentInfo();
-        rentInfo.setLayout("三室两厅");
-        rentInfo.setCustomer(customer);
+        rentInfo.setHuxing("三室两厅");
+        rentInfo.setCid(customer.getCid());
 
         rentInfoMapper.add(rentInfo);
 
         RentInfo rentInfo1 = rentInfoMapper.sel(rentInfo.getRid());
 
-        assertEquals(rentInfo1.getLayout(), rentInfo.getLayout());
+        assertEquals(rentInfo1.getHuxing(), rentInfo.getHuxing());
     }
 
     @Test
     @Transactional
     public void whenAddedUsernameOfTheCustomerIsSame() {
-        customerMapper.add(customer);
         RentInfo rentInfo = new RentInfo();
-        rentInfo.setCustomer(customer);
+        rentInfo.setCid(customer.getCid());
 
         rentInfoMapper.add(rentInfo);
 
         RentInfo rentInfo1 = rentInfoMapper.sel(rentInfo.getRid());
 
-        assertEquals(rentInfo.getCustomer().getUsername(),rentInfo1.getCustomer().getUsername());
+        Customer customer1 = customerMapper.sel(rentInfo.getCid());
+
+        assertEquals(customer1.getUsername(),customer.getUsername());
     }
-
-
 }
