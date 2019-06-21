@@ -46,6 +46,23 @@ public class RentInfoMapperTest {
 
     @Test
     @Transactional
+    public void whenAddedTheRidIsIncred(){
+        RentInfo rentInfo = new RentInfo();
+        rentInfo.setHuxing("三室两厅");
+        rentInfo.setCid(customer.getCid());
+
+        rentInfoMapper.add(rentInfo);
+
+        RentInfo rentInfo1 = new RentInfo();
+        rentInfo1.setHuxing("三室两厅");
+        rentInfo1.setCid(customer.getCid());
+        rentInfoMapper.add(rentInfo1);
+
+        assertEquals(rentInfo.getRid() + 1, rentInfo1.getRid());
+    }
+
+    @Test
+    @Transactional
     public void whenAddedTheHuxingIsTheSame(){
         RentInfo rentInfo = new RentInfo();
         rentInfo.setHuxing("三室两厅");
@@ -68,7 +85,7 @@ public class RentInfoMapperTest {
 
         RentInfo rentInfo1 = rentInfoMapper.sel(rentInfo.getRid());
 
-        Customer customer1 = customerMapper.sel(rentInfo.getCid());
+        Customer customer1 = customerMapper.sel(rentInfo1.getCid());
 
         assertEquals(customer1.getUsername(),customer.getUsername());
     }
