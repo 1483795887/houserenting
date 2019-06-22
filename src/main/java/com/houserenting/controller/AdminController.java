@@ -11,8 +11,12 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/admin",method = RequestMethod.POST)
 public class AdminController {
+    private final AdminService service;
+
     @Autowired
-    AdminService service;
+    public AdminController(AdminService service) {
+        this.service = service;
+    }
 
     @RequestMapping("/confirm")
     public Map<String,Object> confirm(@RequestBody Map o){
@@ -60,7 +64,7 @@ public class AdminController {
         String username = (String)o.get("username");
         String tel = (String)o.get("tel");
         String password = (String)o.get("password");
-        String newPassword = (String)o.get("newPassword");
+        String newPassword = (String)o.get("newpassword");
 
         boolean result = service.change(username, tel, password, newPassword);
 
@@ -68,7 +72,7 @@ public class AdminController {
         if(result){
             msg.putSuccessCode();
         }else
-            msg.putFailedCode("loginFailed");
+            msg.putFailedCode("changeFailed");
 
         return msg;
     }

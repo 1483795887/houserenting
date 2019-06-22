@@ -12,8 +12,12 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/customer",method = RequestMethod.POST)
 public class CustomerController {
+    private  final CustomerService service;
+
     @Autowired
-    CustomerService service;
+    public CustomerController(CustomerService service) {
+        this.service = service;
+    }
 
     @RequestMapping(value = "/confirm")
     public Map<String, Object> confirm(@RequestBody Map o) {
@@ -81,14 +85,14 @@ public class CustomerController {
         String username = (String)o.get("username");
         String tel = (String)o.get("tel");
         String password = (String)o.get("password");
-        String newPassword = (String)o.get("newPassword");
+        String newPassword = (String)o.get("newpassword");
         boolean result = service.change(username, tel, password, newPassword);
 
         MsgMap msg = new MsgMap();
         if(result){
             msg.putSuccessCode();
         }else
-            msg.putFailedCode("loginFailed");
+            msg.putFailedCode("changePasswordFailed");
 
         return msg;
     }

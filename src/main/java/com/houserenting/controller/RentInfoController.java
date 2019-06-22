@@ -72,4 +72,12 @@ public class RentInfoController {
         return msg;
 
     }
+
+    @RequestMapping(value = "/count")
+    public Map<String,Object> getCount(){
+        MsgMap map = new MsgMap();
+        map.putSuccessCode();
+        map.put("count",rentInfoService.getCount());
+        return map;
+    }
 }
