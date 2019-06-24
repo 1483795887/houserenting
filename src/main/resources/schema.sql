@@ -1,7 +1,9 @@
+drop table messages;
+drop table rent_info;
 drop table customer;
 drop table admin;
-drop table rent_info;
-drop table messages;
+
+
 
 CREATE TABLE customer
 (
