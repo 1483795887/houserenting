@@ -146,4 +146,32 @@ public class RentInfoMapperTest {
 
         assertEquals(count, rentInfoMapper.getCount());
     }
+
+    @Test
+    @Transactional
+    public void testGetRentInfosByCid(){
+        int count = 100;
+        addTestData(100);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("cid",customer.getCid());
+        map.put("begin", 0);
+        map.put("size", 10);
+
+        assertEquals(10, rentInfoMapper.getRentInfosByCid(map).size());
+    }
+
+    @Test
+    @Transactional
+    public void testGetRentInfosByCid2(){
+        int count = 100;
+        addTestData(100);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("cid",customer.getCid());
+        map.put("begin", 0);
+        map.put("size", 10111);
+
+        assertEquals(count, rentInfoMapper.getRentInfosByCid(map).size());
+    }
 }

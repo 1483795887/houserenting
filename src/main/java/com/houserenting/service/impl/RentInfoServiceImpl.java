@@ -58,4 +58,17 @@ public class RentInfoServiceImpl implements RentInfoService {
     public int getCount() {
         return rentInfoMapper.getCount();
     }
+
+    @Override
+    public List<RentInfo> getRentInfosByCid(int page, int size, int cid) {
+        List<RentInfo> infos = new ArrayList<>();
+        if (page <= 0 || size <= 0)
+            return infos;
+        Map<String, Object> map = new HashMap<>();
+        map.put("cid",cid);
+        map.put("begin", (page - 1) * size);
+        map.put("size", size);
+        infos = rentInfoMapper.getByPage(map);
+        return infos;
+    }
 }

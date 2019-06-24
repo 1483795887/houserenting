@@ -12,4 +12,5 @@ public interface RentInfoMapper {
     void add(RentInfo rentInfo);
     List<RentInfo> getByPage(Map<String,Object> map);
     int getCount();
+    List<RentInfo> getRentInfosByCid(Map<String,Object> map);
 }

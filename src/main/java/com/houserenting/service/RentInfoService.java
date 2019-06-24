@@ -10,4 +10,5 @@ public interface RentInfoService {
     RentInfo getRentInfo(int rid);
     List<RentInfo> getRentInfos(int page, int size);
     int getCount();
+    List<RentInfo> getRentInfosByCid(int page, int size, int cid);
 }

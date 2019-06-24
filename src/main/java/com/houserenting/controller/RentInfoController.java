@@ -43,11 +43,11 @@ public class RentInfoController {
     public Map<String, Object> showDetail(@RequestBody Map o) {
         MsgMap msg = new MsgMap();
         RentInfo rentInfo = rentInfoService.getRentInfo((int) o.get("rid"));
-        if(rentInfo == null)
+        if (rentInfo == null)
             msg.putFailedCode("can't get rent info");
-        else{
+        else {
             Customer customer = customerService.getCustomer(rentInfo.getCid());
-            if ( customer == null) {
+            if (customer == null) {
                 msg.putFailedCode("can't get customer of this rent");
             } else {
                 msg.putSuccessCode();
@@ -65,19 +65,35 @@ public class RentInfoController {
         int page = (int) o.get("page");
         int size = (int) o.get("size");
         List<RentInfo> rentInfoList = rentInfoService.getRentInfos(page, size);
+
         MsgMap msg = new MsgMap();
         msg.putSuccessCode();
-        msg.put("list",rentInfoList);
+        msg.put("list", rentInfoList);
 
         return msg;
 
     }
 
     @RequestMapping(value = "/count")
-    public Map<String,Object> getCount(){
+    public Map<String, Object> getCount() {
         MsgMap map = new MsgMap();
         map.putSuccessCode();
-        map.put("count",rentInfoService.getCount());
+        map.put("count", rentInfoService.getCount());
         return map;
+    }
+
+    @RequestMapping(value = "/rentinfosbycid")
+    public Map<String, Object> showRentInfosOfCustomer(@RequestBody Map o) {
+        int page = (int) o.get("page");
+        int size = (int) o.get("size");
+        int cid = (int) o.get("cid");
+
+        List<RentInfo> rentInfos = rentInfoService.getRentInfosByCid(page, size, cid);
+
+        MsgMap msg = new MsgMap();
+        msg.putSuccessCode();
+        msg.put("list", rentInfos);
+
+        return msg;
     }
 }
