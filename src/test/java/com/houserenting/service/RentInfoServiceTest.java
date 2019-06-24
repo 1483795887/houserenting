@@ -109,18 +109,24 @@ public class RentInfoServiceTest {
     @Test
     @Transactional
     public void getListSizeRight() {
+        int existCount = service.getCount();
+
         int count = 10;
         addTestData(count);
 
-        assertEquals(4, service.getRentInfos(2, 6).size());
+        int size = 6;
+        int page = 2 + existCount / size;
+        int newCount = 4 + existCount % size;
+
+        assertEquals(newCount, service.getRentInfos(page, size).size());
     }
 
     @Test
     @Transactional
     public void testGetCount() {
-        int count = 100;
-        addTestData(count);
+        int count = service.getCount();
+        addTestData(100);
 
-        assertEquals(count, service.getCount());
+        assertEquals(count + 100, service.getCount());
     }
 }

@@ -32,12 +32,6 @@ public class AdminMapperTest {
 
     @Test
     @Transactional
-    public void testCount() {
-        assertEquals(1, mapper.getCount());
-    }
-
-    @Test
-    @Transactional
     public void afterAddCountIsAdded() {
         int count = mapper.getCount();
         Admin admin1 = new Admin();

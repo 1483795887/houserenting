@@ -47,7 +47,7 @@ public class MessageServiceImplTest {
         Message message = new Message();
         message.setRid(rentInfo.getRid());
 
-        assertFalse( service.add(message));
+        assertFalse(service.add(message));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class MessageServiceImplTest {
         Message message = new Message();
         message.setCustomer(customer);
 
-        assertFalse( service.add(message));
+        assertFalse(service.add(message));
     }
 
     @Test
@@ -87,4 +87,62 @@ public class MessageServiceImplTest {
         assertEquals(message.getContent(), message1.getContent());
     }
 
+
+    private void addTestData(int count) {
+        for (int i = 0; i < count; i++) {
+            Message message = new Message();
+            message.setCustomer(customer);
+            message.setRid(rentInfo.getRid());
+            message.setContent("content" + i);
+
+            service.add(message);
+        }
+    }
+
+    @Test
+    @Transactional
+    public void whenPageMinusOfGettingMessageListThenEmpty() {
+        addTestData(10);
+
+        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),-1,10).size(),
+                0);
+
+    }
+
+    @Test
+    @Transactional
+    public void whenPageOverOfGettingMessageListThenEmpty(){
+        addTestData(10);
+
+        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),-1,10).size(),
+                0);
+    }
+
+    @Test
+    @Transactional
+    public void whenSizeMinusOfGettingMessageListThenEmpty(){
+        addTestData(10);
+
+        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),-1,10).size(),
+                0);
+    }
+
+    @Test
+    @Transactional
+    public void whenRentInfoNotExistOfGettingMessageListThenEmpty(){
+        addTestData(10);
+
+        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),-1,10).size(),
+                0);
+    }
+
+    @Test
+    @Transactional
+    public void whenGettingMessageListThenCountRight(){
+        addTestData(10);
+
+        assertEquals(
+                service.getMessagesOfRentInfo(rentInfo.getRid(),1,10).size(),
+                10);
+    }
 }

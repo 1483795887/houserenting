@@ -64,7 +64,7 @@ public class CustomerMapperTest {
     public void addMakeCidInc() {
         int cid = customer.getCid();
         Customer theCustomer = new Customer();
-        theCustomer.setUsername("test");
+        theCustomer.setUsername("test123");
         theCustomer.setPassword("pa");
         theCustomer.setTel("tel");
         mapper.add(theCustomer);

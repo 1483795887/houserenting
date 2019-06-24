@@ -57,12 +57,6 @@ public class MessageMapperTest {
 
     @Test
     @Transactional
-    public void getCountZeroWhenEmpty() {
-        assertEquals(0, mapper.getCount());
-    }
-
-    @Test
-    @Transactional
     public void countIncWhenAdded() {
         int count = mapper.getCount();
 

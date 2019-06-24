@@ -113,27 +113,28 @@ public class RentInfoMapperTest {
     @Test
     @Transactional
     public void getRentInfosWhenCountIsNotEnough() {
+        int existCount = rentInfoMapper.getCount();
         int count = 5;
         addTestData(count);
 
         Map<String, Object> map = new HashMap<>();
         map.put("begin", 0);
-        map.put("size", 10);
+        map.put("size", count + existCount + 5);
 
         List<RentInfo> rentInfos = rentInfoMapper.getByPage(map);
 
-        assertEquals(rentInfos.size(), count);
+        assertEquals(rentInfos.size(), count + existCount);
     }
 
     @Test
     @Transactional
     public void getRentInfosWhenCountIsEnough() {
         int count = 20;
-
+        int existCount = rentInfoMapper.getCount();
         addTestData(count);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("begin", 10);
+        map.put("begin", 10 + existCount);
         map.put("size", 10);
 
         List<RentInfo> rentInfos = rentInfoMapper.getByPage(map);
@@ -143,10 +144,11 @@ public class RentInfoMapperTest {
     @Test
     @Transactional
     public void testGetCountOfRentInfos() {
-        int count = 10;
-        addTestData(count);
+        int count = rentInfoMapper.getCount();
 
-        assertEquals(count, rentInfoMapper.getCount());
+        addTestData(10);
+
+        assertEquals(count + 10, rentInfoMapper.getCount());
     }
 
     @Test
