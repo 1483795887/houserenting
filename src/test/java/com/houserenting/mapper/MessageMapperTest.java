@@ -12,7 +12,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 
 @RunWith(SpringRunner.class)
@@ -28,14 +33,19 @@ public class MessageMapperTest {
     @Autowired
     RentInfoMapper rentInfoMapper;
 
-
     private Customer customer;
     private RentInfo rentInfo;
     private Message message;
 
+    private final static int testCustomerNum = 10;
+    private final static int testRentInfoNum = 10;
+
+    private List<Customer> testCustomers;
+    private List<RentInfo> testRentInfos;
+
     @Before
     @Transactional
-    public void setUp(){
+    public void setUp() {
         customer = new Customer();
         customer.setUsername("username");
 
@@ -58,7 +68,7 @@ public class MessageMapperTest {
 
     @Test
     @Transactional
-    public void countIncWhenAdded(){
+    public void countIncWhenAdded() {
         int count = mapper.getCount();
 
         message.setCid(customer.getCid());
@@ -71,7 +81,7 @@ public class MessageMapperTest {
 
     @Test(expected = DataIntegrityViolationException.class)
     @Transactional
-    public void addWhenCustomerNotExist(){
+    public void addWhenCustomerNotExist() {
         message.setRid(rentInfo.getRid());
 
         mapper.add(message);
@@ -79,7 +89,7 @@ public class MessageMapperTest {
 
     @Test(expected = DataIntegrityViolationException.class)
     @Transactional
-    public void addWhenRentInfoNotExist(){
+    public void addWhenRentInfoNotExist() {
         message.setCid(customer.getCid());
 
         mapper.add(message);
@@ -87,7 +97,7 @@ public class MessageMapperTest {
 
     @Test
     @Transactional
-    public void midIncWhenAdded(){
+    public void midIncWhenAdded() {
         message.setCid(customer.getCid());
         message.setRid(rentInfo.getRid());
 
@@ -99,12 +109,12 @@ public class MessageMapperTest {
 
         mapper.add(message1);
 
-        assertEquals(message.getMid()+ 1, message1.getMid() );
+        assertEquals(message.getMid() + 1, message1.getMid());
     }
 
     @Test
     @Transactional
-    public void contentRightWhenSel(){
+    public void contentRightWhenSel() {
         message.setCid(customer.getCid());
         message.setRid(rentInfo.getRid());
 
@@ -114,5 +124,94 @@ public class MessageMapperTest {
 
         Message message1 = mapper.sel(message.getMid());
         assertEquals(message1.getContent(), message.getContent());
+    }
+
+    private void addTestData() {
+        testCustomers = new ArrayList<>();
+        testRentInfos = new ArrayList<>();
+
+        for (int c = 0; c < testCustomerNum; c++) {
+            Customer customer = new Customer();
+            customer.setUsername("user" + c);
+            testCustomers.add(customer);
+            customerMapper.add(customer);
+        }
+
+        for (int r = 0; r < testRentInfoNum; r++) {
+            RentInfo rentInfo = new RentInfo();
+            rentInfo.setHuxing("huxing" + r);
+            rentInfo.setCid(testCustomers.get(r).getCid());
+            testRentInfos.add(rentInfo);
+            rentInfoMapper.add(rentInfo);
+            for (int c = 0; c < testCustomerNum; c++) {
+                Message message = new Message();
+                message.setRid(rentInfo.getRid());
+                message.setCid(testCustomers.get(c).getCid());
+
+                message.setContent(rentInfo.getHuxing()
+                        + testCustomers.get(c).getUsername()
+                        + " content");
+
+                mapper.add(message);
+            }
+        }
+
+    }
+
+    private Map<String, Object> makeParaMap(int rid, int begin, int size) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("rid", rid);
+        map.put("begin", begin);
+        map.put("size", size);
+
+        return map;
+    }
+
+    @Test
+    @Transactional
+    public void countRightWhenGetMessagesByRentInfoFull() {
+        addTestData();
+
+        assertEquals(testRentInfoNum,
+                mapper.getMessagesOfRentInfo(
+                        makeParaMap(testRentInfos.get(2).getRid(),
+                                0,
+                                testCustomerNum * testRentInfoNum)).size());
+    }
+
+    @Test
+    @Transactional
+    public void countRightWhenGetMessageRentInfoNotFull() {
+        addTestData();
+
+        assertEquals(5,
+                mapper.getMessagesOfRentInfo(
+                        makeParaMap(testRentInfos.get(2).getRid(),
+                                0,
+                                5)).size());
+    }
+
+    @Test
+    @Transactional
+    public void countRightWhenGetMessageRentInfoBeginIsTooHigh() {
+        addTestData();
+
+        assertEquals(0,
+                mapper.getMessagesOfRentInfo(
+                        makeParaMap(testRentInfos.get(2).getRid(),
+                                testCustomerNum * testCustomerNum,
+                                testCustomerNum)).size());
+    }
+
+    @Test
+    @Transactional
+    public void contentRightWhenGetMessageRentInfoBegin() {
+        addTestData();
+
+        assertEquals("huxing2user3 content",
+                mapper.getMessagesOfRentInfo(
+                        makeParaMap(testRentInfos.get(2).getRid(),
+                                0,
+                                testCustomerNum)).get(3).getContent());
     }
 }

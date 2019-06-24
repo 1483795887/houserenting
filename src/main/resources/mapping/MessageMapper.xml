@@ -19,6 +19,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="sel" resultMap="MessageResult" parameterType="int">
 		select * from messages where mid=#{mid}
 	</select>
+	<select id="getMessagesOfRentInfo" resultMap="MessageResult" parameterType="map">
+		select *
+		from messages where rid=#{rid} limit #{begin},#{size};
+	</select>
 
 	<insert id="add" parameterType="com.houserenting.entity.Message">
 		<selectKey keyColumn="mid" keyProperty="mid" resultType="Integer" order="AFTER">

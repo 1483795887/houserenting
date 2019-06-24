@@ -36,6 +36,7 @@ CREATE TABLE rent_info
   price float NOT NULL,
   address varchar(20) NOT NULL,
   pic varchar(200) NOT NULL,
+  examined int not null,
   CONSTRAINT rent_info_customer_cid_fk FOREIGN KEY (cid) REFERENCES customer (cid)
 );
 

@@ -5,7 +5,6 @@ import com.houserenting.entity.RentInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -14,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,7 +30,7 @@ public class RentInfoMapperTest {
     private RentInfo rentInfo;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         customer = new Customer();
         customer.setUsername("username");
         customer.setPassword("password");
@@ -48,13 +50,13 @@ public class RentInfoMapperTest {
 
     @Test
     @Transactional
-    public void getRentInfoNullWhenNotExist(){
+    public void getRentInfoNullWhenNotExist() {
         assertNull(rentInfoMapper.sel(0));
     }
 
     @Test
     @Transactional
-    public void whenAddedTheRidIsIncred(){
+    public void whenAddedTheRidIsIncred() {
         RentInfo rentInfo = new RentInfo();
         rentInfo.setHuxing("三室两厅");
         rentInfo.setCid(customer.getCid());
@@ -71,7 +73,7 @@ public class RentInfoMapperTest {
 
     @Test
     @Transactional
-    public void whenAddedTheHuxingIsTheSame(){
+    public void whenAddedTheHuxingIsTheSame() {
         RentInfo rentInfo = new RentInfo();
         rentInfo.setHuxing("三室两厅");
         rentInfo.setCid(customer.getCid());
@@ -95,13 +97,13 @@ public class RentInfoMapperTest {
 
         Customer customer1 = customerMapper.sel(rentInfo1.getCid());
 
-        assertEquals(customer1.getUsername(),customer.getUsername());
+        assertEquals(customer1.getUsername(), customer.getUsername());
     }
 
-    private void addTestData(int count){
-        for(int i = 0 ;i < count ;i ++){
+    private void addTestData(int count) {
+        for (int i = 0; i < count; i++) {
             RentInfo rentInfo = new RentInfo();
-            rentInfo.setHuxing(String.format("%d",i));
+            rentInfo.setHuxing(String.format("%d", i));
             rentInfo.setCid(customer.getCid());
 
             rentInfoMapper.add(rentInfo);
@@ -110,12 +112,12 @@ public class RentInfoMapperTest {
 
     @Test
     @Transactional
-    public void getRentInfosWhenCountIsNotEnough(){
+    public void getRentInfosWhenCountIsNotEnough() {
         int count = 5;
         addTestData(count);
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("begin",0);
+        Map<String, Object> map = new HashMap<>();
+        map.put("begin", 0);
         map.put("size", 10);
 
         List<RentInfo> rentInfos = rentInfoMapper.getByPage(map);
@@ -125,13 +127,13 @@ public class RentInfoMapperTest {
 
     @Test
     @Transactional
-    public void getRentInfosWhenCountIsEnough(){
+    public void getRentInfosWhenCountIsEnough() {
         int count = 20;
 
         addTestData(count);
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("begin",10);
+        Map<String, Object> map = new HashMap<>();
+        map.put("begin", 10);
         map.put("size", 10);
 
         List<RentInfo> rentInfos = rentInfoMapper.getByPage(map);
@@ -140,7 +142,7 @@ public class RentInfoMapperTest {
 
     @Test
     @Transactional
-    public void testGetCountOfRentInfos(){
+    public void testGetCountOfRentInfos() {
         int count = 10;
         addTestData(count);
 
@@ -149,12 +151,12 @@ public class RentInfoMapperTest {
 
     @Test
     @Transactional
-    public void testGetRentInfosByCid(){
+    public void testGetRentInfosByCid() {
         int count = 100;
         addTestData(100);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("cid",customer.getCid());
+        map.put("cid", customer.getCid());
         map.put("begin", 0);
         map.put("size", 10);
 
@@ -163,12 +165,12 @@ public class RentInfoMapperTest {
 
     @Test
     @Transactional
-    public void testGetRentInfosByCid2(){
+    public void testGetRentInfosByCid2() {
         int count = 100;
         addTestData(100);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("cid",customer.getCid());
+        map.put("cid", customer.getCid());
         map.put("begin", 0);
         map.put("size", 10111);
 

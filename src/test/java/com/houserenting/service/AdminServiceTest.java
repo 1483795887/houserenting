@@ -4,11 +4,12 @@ import com.houserenting.entity.Admin;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,7 +33,7 @@ public class AdminServiceTest {
 
     @Test
     @Transactional
-    public void signupForSameUsernameFailed(){
+    public void signupForSameUsernameFailed() {
         Admin admin1 = new Admin();
         admin1.setUsername("username1");
         admin1.setPassword("123");
@@ -42,7 +43,7 @@ public class AdminServiceTest {
 
     @Test
     @Transactional
-    public void signupSuccess(){
+    public void signupSuccess() {
         Admin admin1 = new Admin();
         admin1.setUsername("username");
         admin1.setPassword("password");
@@ -52,66 +53,66 @@ public class AdminServiceTest {
 
     @Test
     @Transactional
-    public void loginPasswordNullFail(){
-        assertNull(service.login("username1",null));
+    public void loginPasswordNullFail() {
+        assertNull(service.login("username1", null));
     }
 
     @Test
     @Transactional
-    public void loginUsernameNotExistFail(){
-        assertNull(service.login("usr","123456"));
+    public void loginUsernameNotExistFail() {
+        assertNull(service.login("usr", "123456"));
     }
 
     @Test
     @Transactional
-    public void loginUsernameNotMatchPassword(){
-        assertNull(service.login("username1","123"));
+    public void loginUsernameNotMatchPassword() {
+        assertNull(service.login("username1", "123"));
     }
 
     @Test
     @Transactional
-    public void loginSuccess(){
-        assertNotNull(service.login("username1","123456"));
+    public void loginSuccess() {
+        assertNotNull(service.login("username1", "123456"));
     }
 
     @Transactional
-    public void usernameNotExist(){
+    public void usernameNotExist() {
         assertFalse(service.confirm("username"));
     }
 
     @Test
     @Transactional
-    public void usernameExist(){
+    public void usernameExist() {
         assertTrue(service.confirm("username1"));
     }
 
     @Test
     @Transactional
-    public void userNotExistChangeFail(){
-        assertFalse(service.change("username", "tel","pass" ,
+    public void userNotExistChangeFail() {
+        assertFalse(service.change("username", "tel", "pass",
                 "pass"));
     }
 
     @Test
     @Transactional
-    public void userExistButPassNotRightFail(){
-        assertFalse(service.change("username1","18696104532",
-                "111","111"));
+    public void userExistButPassNotRightFail() {
+        assertFalse(service.change("username1", "18696104532",
+                "111", "111"));
     }
 
     @Test
     @Transactional
-    public void userExistButTelNotRightFail(){
-        assertFalse(service.change("username1","1234",
-                "123456","1234"));
+    public void userExistButTelNotRightFail() {
+        assertFalse(service.change("username1", "1234",
+                "123456", "1234"));
     }
 
     @Test
     @Transactional
-    public void changeSuccess(){
+    public void changeSuccess() {
         service.change("username1", "18696104532",
-                "123456","1234");
+                "123456", "1234");
 
-        assertNotNull(service.login("username1","1234"));
+        assertNotNull(service.login("username1", "1234"));
     }
 }

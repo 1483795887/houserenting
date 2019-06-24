@@ -4,12 +4,15 @@ import com.houserenting.entity.Admin;
 import com.houserenting.service.AdminService;
 import com.houserenting.utils.MsgMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/admin",method = RequestMethod.POST)
+@RequestMapping(value = "/admin", method = RequestMethod.POST)
 public class AdminController {
     private final AdminService service;
 
@@ -19,10 +22,10 @@ public class AdminController {
     }
 
     @RequestMapping("/confirm")
-    public Map<String,Object> confirm(@RequestBody Map o){
-        boolean result = service.confirm((String)o.get("username"));
+    public Map<String, Object> confirm(@RequestBody Map o) {
+        boolean result = service.confirm((String) o.get("username"));
         MsgMap msg = new MsgMap();
-        if(!result)
+        if (!result)
             msg.putSuccessCode();
         else
             msg.putFailedCode("user exists");
@@ -30,48 +33,48 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/signup")
-    public Map<String,Object> signup(@RequestBody Admin admin){
+    public Map<String, Object> signup(@RequestBody Admin admin) {
         boolean result = service.signup(admin);
 
         MsgMap msg = new MsgMap();
-        if(result){
+        if (result) {
             msg.putSuccessCode();
             msg.put("user", admin);
-        }else
+        } else
             msg.putFailedCode("signUpFailed");
 
         return msg;
     }
 
     @RequestMapping(value = "/login")
-    public Map<String,Object> login(@RequestBody Map o){
-        String username = (String)o.get("username");
-        String password = (String)o.get("password");
-        Admin admin = service.login(username,password);
+    public Map<String, Object> login(@RequestBody Map o) {
+        String username = (String) o.get("username");
+        String password = (String) o.get("password");
+        Admin admin = service.login(username, password);
 
         MsgMap msg = new MsgMap();
-        if(admin != null){
+        if (admin != null) {
             msg.putSuccessCode();
-            msg.put("user",admin);
-        }else
+            msg.put("user", admin);
+        } else
             msg.putFailedCode("loginFailed");
 
         return msg;
     }
 
     @RequestMapping("/change")
-    public Map<String,Object> change(@RequestBody Map o){
-        String username = (String)o.get("username");
-        String tel = (String)o.get("tel");
-        String password = (String)o.get("password");
-        String newPassword = (String)o.get("newpassword");
+    public Map<String, Object> change(@RequestBody Map o) {
+        String username = (String) o.get("username");
+        String tel = (String) o.get("tel");
+        String password = (String) o.get("password");
+        String newPassword = (String) o.get("newpassword");
 
         boolean result = service.change(username, tel, password, newPassword);
 
         MsgMap msg = new MsgMap();
-        if(result){
+        if (result) {
             msg.putSuccessCode();
-        }else
+        } else
             msg.putFailedCode("changeFailed");
 
         return msg;

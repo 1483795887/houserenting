@@ -24,7 +24,7 @@ public class RentInfoServiceTest {
     private Customer customer;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         customer = new Customer();
         customer.setUsername("username1");
         customer.setPassword("123456");
@@ -40,13 +40,13 @@ public class RentInfoServiceTest {
 
     @Test
     @Transactional
-    public void whenCustomerIdNotExist(){
+    public void whenCustomerIdNotExist() {
         assertFalse(service.addRentInfo(new RentInfo()));
     }
 
     @Test
     @Transactional
-    public void afterAddedTheRentInfoIsRight(){
+    public void afterAddedTheRentInfoIsRight() {
 
         RentInfo rentInfo = new RentInfo();
         rentInfo.setHuxing("aaaa");
@@ -63,7 +63,7 @@ public class RentInfoServiceTest {
 
     @Test
     @Transactional
-    public void afterAddedTheCustomerIsRight(){
+    public void afterAddedTheCustomerIsRight() {
 
         RentInfo rentInfo = new RentInfo();
         rentInfo.setHuxing("aaaa");
@@ -79,10 +79,10 @@ public class RentInfoServiceTest {
 
     }
 
-    private void addTestData(int count){
-        for(int i = 0 ; i < count;i++){
+    private void addTestData(int count) {
+        for (int i = 0; i < count; i++) {
             RentInfo rentInfo = new RentInfo();
-            rentInfo.setHuxing(String.format("%d",i));
+            rentInfo.setHuxing(String.format("%d", i));
             rentInfo.setCid(customer.getCid());
 
             service.addRentInfo(rentInfo);
@@ -91,16 +91,16 @@ public class RentInfoServiceTest {
 
     @Test
     @Transactional
-    public void getListWhenPageIsMinus(){
+    public void getListWhenPageIsMinus() {
         int count = 10;
         addTestData(count);
 
-        assertEquals(0, service.getRentInfos(-1,10).size());
+        assertEquals(0, service.getRentInfos(-1, 10).size());
     }
 
     @Test
     @Transactional
-    public void getListEmptyWhenSizeIsMinus(){
+    public void getListEmptyWhenSizeIsMinus() {
         int count = 10;
         addTestData(count);
         assertEquals(0, service.getRentInfos(1, -1).size());
@@ -108,16 +108,16 @@ public class RentInfoServiceTest {
 
     @Test
     @Transactional
-    public void getListSizeRight(){
+    public void getListSizeRight() {
         int count = 10;
         addTestData(count);
 
-        assertEquals(4,service.getRentInfos(2, 6).size());
+        assertEquals(4, service.getRentInfos(2, 6).size());
     }
 
     @Test
     @Transactional
-    public void testGetCount(){
+    public void testGetCount() {
         int count = 100;
         addTestData(count);
 

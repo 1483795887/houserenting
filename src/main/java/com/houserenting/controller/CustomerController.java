@@ -4,15 +4,17 @@ import com.houserenting.entity.Customer;
 import com.houserenting.service.CustomerService;
 import com.houserenting.utils.MsgMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/customer",method = RequestMethod.POST)
+@RequestMapping(value = "/customer", method = RequestMethod.POST)
 public class CustomerController {
-    private  final CustomerService service;
+    private final CustomerService service;
 
     @Autowired
     public CustomerController(CustomerService service) {
@@ -21,9 +23,9 @@ public class CustomerController {
 
     @RequestMapping(value = "/confirm")
     public Map<String, Object> confirm(@RequestBody Map o) {
-        boolean result = service.confirm((String)o.get("username"));
+        boolean result = service.confirm((String) o.get("username"));
         MsgMap msg = new MsgMap();
-        if(!result)
+        if (!result)
             msg.putSuccessCode();
         else
             msg.putFailedCode("user exists");
@@ -31,37 +33,37 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/signup")
-    public Map<String,Object> signup(@RequestBody Customer customer){
+    public Map<String, Object> signup(@RequestBody Customer customer) {
         boolean result = service.signup(customer);
 
         MsgMap msg = new MsgMap();
-        if(result){
+        if (result) {
             msg.putSuccessCode();
             msg.put("user", customer);
-        }else
+        } else
             msg.putFailedCode("signUpFailed");
 
         return msg;
     }
 
     @RequestMapping(value = "/login")
-    public Map<String,Object> login(@RequestBody Map o){
-        String username = (String)o.get("username");
-        String password = (String)o.get("password");
-        Customer customer = service.login(username,password);
+    public Map<String, Object> login(@RequestBody Map o) {
+        String username = (String) o.get("username");
+        String password = (String) o.get("password");
+        Customer customer = service.login(username, password);
 
         MsgMap msg = new MsgMap();
-        if(customer != null){
+        if (customer != null) {
             msg.putSuccessCode();
-            msg.put("user",customer);
-        }else
+            msg.put("user", customer);
+        } else
             msg.putFailedCode("loginFailed");
 
         return msg;
     }
 
     @RequestMapping("/updateInfo")
-    public Map<String, Object> updateInfo(@RequestBody Customer customer){
+    public Map<String, Object> updateInfo(@RequestBody Customer customer) {
         Customer newCustomer = service.getCustomer(customer.getCid());
 
         newCustomer.setSex(customer.getSex());
@@ -74,24 +76,24 @@ public class CustomerController {
 
         MsgMap msg = new MsgMap();
         msg.putSuccessCode();
-        msg.put("user",newCustomer);
+        msg.put("user", newCustomer);
 
         return msg;
 
     }
 
     @RequestMapping("/change")
-    public Map<String,Object> change(@RequestBody Map o){
-        String username = (String)o.get("username");
-        String tel = (String)o.get("tel");
-        String password = (String)o.get("password");
-        String newPassword = (String)o.get("newpassword");
+    public Map<String, Object> change(@RequestBody Map o) {
+        String username = (String) o.get("username");
+        String tel = (String) o.get("tel");
+        String password = (String) o.get("password");
+        String newPassword = (String) o.get("newpassword");
         boolean result = service.change(username, tel, password, newPassword);
 
         MsgMap msg = new MsgMap();
-        if(result){
+        if (result) {
             msg.putSuccessCode();
-        }else
+        } else
             msg.putFailedCode("changePasswordFailed");
 
         return msg;

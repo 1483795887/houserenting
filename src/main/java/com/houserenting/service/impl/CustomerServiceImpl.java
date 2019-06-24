@@ -4,7 +4,6 @@ import com.houserenting.entity.Customer;
 import com.houserenting.mapper.CustomerMapper;
 import com.houserenting.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service

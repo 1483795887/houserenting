@@ -13,6 +13,7 @@
         <result column="price" property="price"/>
         <result column="address" property="address"/>
         <result column="pic" property="pic"/>
+        <result column="examined" property="examined"/>
 
     </resultMap>
 
@@ -37,9 +38,9 @@
             select last_insert_id()
         </selectKey>
         insert into rent_info
-        (cid,huxing,mianji,zhuangxiu, price, address, pic, time)
+        (cid,huxing,mianji,zhuangxiu, price, address, pic, time,examined)
         values (#{cid},#{huxing},#{mianji},#{zhuangxiu},#{price},
-        #{address},#{pic},#{time})
+        #{address},#{pic},#{time},#{examined})
     </insert>
 
 </mapper> 

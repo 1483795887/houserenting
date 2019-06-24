@@ -29,7 +29,7 @@ public class Customer {
         return cid;
     }
 
-    public void setCid(int cid){
+    public void setCid(int cid) {
         this.cid = cid;
     }
 

@@ -10,7 +10,7 @@ public class RentInfo {
     private float price;
     private String address;
     private String pic;
-
+    private int examined;
 
 
     //{"huxing":"adasf","customer":{"cid":0"}}
@@ -22,6 +22,7 @@ public class RentInfo {
         address = "";
         pic = "";
         time = "";
+        examined = -1;
     }
 
     public int getRid() {
@@ -92,11 +93,19 @@ public class RentInfo {
             this.time = time;
     }
 
-    public int getCid(){
+    public int getCid() {
         return cid;
     }
 
-    public void setCid(int cid){
+    public void setCid(int cid) {
         this.cid = cid;
+    }
+
+    public int getExamined() {
+        return examined;
+    }
+
+    public void setExamined(int examined) {
+        this.examined = examined;
     }
 }

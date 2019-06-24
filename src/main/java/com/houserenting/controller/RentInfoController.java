@@ -59,7 +59,6 @@ public class RentInfoController {
         return msg;
     }
 
-
     @RequestMapping(value = "/rentinfos")
     public Map<String, Object> showRentInfos(@RequestBody Map o) {
         int page = (int) o.get("page");

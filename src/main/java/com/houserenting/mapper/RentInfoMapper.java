@@ -9,8 +9,12 @@ import java.util.Map;
 @Repository
 public interface RentInfoMapper {
     RentInfo sel(int rid);
+
     void add(RentInfo rentInfo);
-    List<RentInfo> getByPage(Map<String,Object> map);
+
+    List<RentInfo> getByPage(Map<String, Object> map);
+
     int getCount();
-    List<RentInfo> getRentInfosByCid(Map<String,Object> map);
+
+    List<RentInfo> getRentInfosByCid(Map<String, Object> map);
 }

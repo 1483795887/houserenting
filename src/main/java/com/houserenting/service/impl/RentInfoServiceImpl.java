@@ -65,7 +65,7 @@ public class RentInfoServiceImpl implements RentInfoService {
         if (page <= 0 || size <= 0)
             return infos;
         Map<String, Object> map = new HashMap<>();
-        map.put("cid",cid);
+        map.put("cid", cid);
         map.put("begin", (page - 1) * size);
         map.put("size", size);
         infos = rentInfoMapper.getByPage(map);

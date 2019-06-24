@@ -4,15 +4,14 @@ import com.houserenting.entity.Customer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(SpringRunner.class)
@@ -54,7 +53,7 @@ public class CustomerMapperTest {
 
     @Test(expected = DataIntegrityViolationException.class)
     @Transactional
-    public void addSameUsername(){
+    public void addSameUsername() {
         Customer customer1 = new Customer();
         customer1.setUsername("username");
         customer1.setPassword("pas");
@@ -74,7 +73,7 @@ public class CustomerMapperTest {
         assertEquals(cid + 1, theCustomer.getCid());
     }
 
-    private boolean equal(Customer customer1, Customer customer2){
+    private boolean equal(Customer customer1, Customer customer2) {
         return customer1.getUsername().equals(customer2.getUsername())
                 && customer1.getPassword().equals(customer2.getPassword())
                 && customer1.getAddress().equals(customer2.getAddress())
@@ -86,13 +85,13 @@ public class CustomerMapperTest {
 
     @Test
     @Transactional
-    public void addedDataIsRight(){
+    public void addedDataIsRight() {
         assertTrue(equal(customer, mapper.sel(customer.getCid())));
     }
 
     @Test
     @Transactional
-    public void afterDeleteTheCountIfRight(){
+    public void afterDeleteTheCountIfRight() {
         int count = mapper.getCount();
         mapper.delete(customer.getCid());
         assertEquals("deleteFailed", count - 1, mapper.getCount());
@@ -100,16 +99,16 @@ public class CustomerMapperTest {
 
     @Test
     @Transactional
-    public void updatePasswordSuccess(){
+    public void updatePasswordSuccess() {
         customer.setPassword("1234");
         mapper.updatePassword(customer);
         Customer customer1 = mapper.sel(customer.getCid());
-        assertEquals(customer1.getPassword(),customer.getPassword());
+        assertEquals(customer1.getPassword(), customer.getPassword());
     }
 
     @Test
     @Transactional
-    public void updateSexSuccess(){
+    public void updateSexSuccess() {
         customer.setSex(Customer.FEMALE);
         mapper.updateInfo(customer);
         Customer customer1 = mapper.sel(customer.getCid());
