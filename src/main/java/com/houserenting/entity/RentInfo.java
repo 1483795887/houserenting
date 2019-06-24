@@ -12,9 +12,6 @@ public class RentInfo {
     private String pic;
     private int examined;
 
-
-    //{"huxing":"adasf","customer":{"cid":0"}}
-
     public RentInfo() {
         huxing = "";
         zhuangxiu = "";
@@ -22,7 +19,7 @@ public class RentInfo {
         address = "";
         pic = "";
         time = "";
-        examined = -1;
+        examined = 0;
     }
 
     public int getRid() {
