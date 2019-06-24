@@ -18,15 +18,13 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest
 public class CustomerMapperTest {
 
-    private Customer customer;
-
     final static int PAGE_NUM = 10;
-
     @Autowired
     CustomerMapper mapper;
+    private Customer customer;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp()  {
         customer = new Customer();
         customer.setUsername("username");
         customer.setPassword("password");

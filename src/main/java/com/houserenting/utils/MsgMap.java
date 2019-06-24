@@ -2,17 +2,17 @@ package com.houserenting.utils;
 
 import java.util.HashMap;
 
-public class MsgMap extends HashMap<String,Object> {
+public class MsgMap extends HashMap<String, Object> {
 
-    final static int SUCCESS = 0;
-    final static int FAILED = -1;
+    private final static int SUCCESS = 0;
+    private final static int FAILED = -1;
 
-    public void putSuccessCode(){
+    public void putSuccessCode() {
         put("code", SUCCESS);
     }
 
-    public void putFailedCode(String msg){
-        put("code",FAILED);
+    public void putFailedCode(String msg) {
+        put("code", FAILED);
         put("msg", msg);
     }
 

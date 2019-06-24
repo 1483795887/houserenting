@@ -1,43 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.houserenting.mapper.CustomerMapper">
 
-	<resultMap type="com.houserenting.entity.Customer" id="CustomerResult">
-		<result property="cid" column="cid" />
-		<result property="username" column="username" />
-		<result property="password" column="password" />
-		<result property="realname" column="realname"/>
-		<result property="sex" column="sex"/>
-		<result property="age" column="age"/>
-		<result property="address" column="address"/>
-		<result property="tel" column="tel"/>
-	</resultMap>
-	<select id="sel" resultMap="CustomerResult">
-		select * from customer where cid=#{cid};
-	</select>
-	<select id="getCount" resultType="Integer">
-		select count(*) from customer;
-	</select>
-	<select id="getCustomerByName" parameterType="String" resultMap="CustomerResult">
-		select * from customer where username=#{value}
-	</select>
-	<update id="updatePassword" parameterType="com.houserenting.entity.Customer">
-		update customer set password=#{password} where cid=#{cid}
-	</update>
-	<update id="updateInfo" parameterType="com.houserenting.entity.Customer">
-		update customer set realname=#{realname},
-							sex=#{sex},age=#{age},address=#{address},tel=#{tel}
-	</update>
-	<insert id="add" parameterType="com.houserenting.entity.Customer">
-		<selectKey keyColumn="cid" keyProperty="cid" resultType="Integer" order="AFTER">
-			select last_insert_id()
-		</selectKey>
-		insert into customer (username, password, realname, sex, age, address, tel)
+    <resultMap type="com.houserenting.entity.Customer" id="CustomerResult">
+        <result property="cid" column="cid"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="realname" column="realname"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="address" column="address"/>
+        <result property="tel" column="tel"/>
+    </resultMap>
+    <select id="sel" resultMap="CustomerResult">
+        select *
+        from customer
+        where cid = #{cid};
+    </select>
+    <select id="getCount" resultType="Integer">
+        select count(*)
+        from customer;
+    </select>
+    <select id="getCustomerByName" parameterType="String" resultMap="CustomerResult">
+        select *
+        from customer
+        where username = #{value}
+    </select>
+    <update id="updatePassword" parameterType="com.houserenting.entity.Customer">
+        update customer
+        set password = #{password}
+        where cid = #{cid}
+    </update>
+    <update id="updateInfo" parameterType="com.houserenting.entity.Customer">
+        update customer
+        set realname = #{realname},
+            sex      = #{sex},
+            age      = #{age},
+            address  = #{address},
+            tel      = #{tel}
+    </update>
+    <insert id="add" parameterType="com.houserenting.entity.Customer">
+        <selectKey keyColumn="cid" keyProperty="cid" resultType="Integer" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert into customer (username, password, realname, sex, age, address, tel)
         values (#{username},#{password},#{realname},#{sex},#{age},#{address},#{tel})
-	</insert>
-	<delete id="delete" parameterType="Integer">
-		delete from customer where cid=#{value}
-	</delete>
+    </insert>
+    <delete id="delete" parameterType="Integer">
+        delete
+        from customer
+        where cid = #{value}
+    </delete>
 </mapper> 

@@ -24,22 +24,17 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 public class MessageMapperTest {
 
+    private final static int testCustomerNum = 10;
+    private final static int testRentInfoNum = 10;
     @Autowired
     MessageMapper mapper;
-
     @Autowired
     CustomerMapper customerMapper;
-
     @Autowired
     RentInfoMapper rentInfoMapper;
-
     private Customer customer;
     private RentInfo rentInfo;
     private Message message;
-
-    private final static int testCustomerNum = 10;
-    private final static int testRentInfoNum = 10;
-
     private List<Customer> testCustomers;
     private List<RentInfo> testRentInfos;
 
@@ -71,7 +66,7 @@ public class MessageMapperTest {
     public void countIncWhenAdded() {
         int count = mapper.getCount();
 
-        message.setCid(customer.getCid());
+        message.setCustomer(customer);
         message.setRid(rentInfo.getRid());
 
         mapper.add(message);
@@ -90,7 +85,7 @@ public class MessageMapperTest {
     @Test(expected = DataIntegrityViolationException.class)
     @Transactional
     public void addWhenRentInfoNotExist() {
-        message.setCid(customer.getCid());
+        message.setCustomer(customer);
 
         mapper.add(message);
     }
@@ -98,13 +93,13 @@ public class MessageMapperTest {
     @Test
     @Transactional
     public void midIncWhenAdded() {
-        message.setCid(customer.getCid());
+        message.setCustomer(customer);
         message.setRid(rentInfo.getRid());
 
         mapper.add(message);
 
         Message message1 = new Message();
-        message1.setCid(customer.getCid());
+        message1.setCustomer(customer);
         message1.setRid(rentInfo.getRid());
 
         mapper.add(message1);
@@ -115,7 +110,7 @@ public class MessageMapperTest {
     @Test
     @Transactional
     public void contentRightWhenSel() {
-        message.setCid(customer.getCid());
+        message.setCustomer(customer);
         message.setRid(rentInfo.getRid());
 
         message.setContent("sadfa");
@@ -124,6 +119,20 @@ public class MessageMapperTest {
 
         Message message1 = mapper.sel(message.getMid());
         assertEquals(message1.getContent(), message.getContent());
+    }
+
+    @Test
+    @Transactional
+    public void customertRightWhenSel() {
+        message.setCustomer(customer);
+        message.setRid(rentInfo.getRid());
+
+        message.setContent("sadfa");
+
+        mapper.add(message);
+
+        Message message1 = mapper.sel(message.getMid());
+        assertEquals(message1.getCustomer().getUsername(), message.getCustomer().getUsername());
     }
 
     private void addTestData() {
@@ -146,7 +155,7 @@ public class MessageMapperTest {
             for (int c = 0; c < testCustomerNum; c++) {
                 Message message = new Message();
                 message.setRid(rentInfo.getRid());
-                message.setCid(testCustomers.get(c).getCid());
+                message.setCustomer(testCustomers.get(c));
 
                 message.setContent(rentInfo.getHuxing()
                         + testCustomers.get(c).getUsername()

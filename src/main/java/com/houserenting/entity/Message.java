@@ -5,14 +5,15 @@ public class Message {
     private String title;
     private String content;
     private String time;
-    private int cid;
     private int rid;
+    private Customer customer;
+
 
     public Message() {
         title = "";
         content = "";
         time = "";
-
+        customer = new Customer();
     }
 
     public int getMid() {
@@ -50,12 +51,13 @@ public class Message {
             this.time = time;
     }
 
-    public int getCid() {
-        return cid;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCid(int cid) {
-        this.cid = cid;
+    public void setCustomer(Customer customer) {
+        if (customer != null)
+            this.customer = customer;
     }
 
     public int getRid() {

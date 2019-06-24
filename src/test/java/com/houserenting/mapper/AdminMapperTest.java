@@ -17,13 +17,12 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest
 public class AdminMapperTest {
 
-    private Admin admin;
-
     @Autowired
     AdminMapper mapper;
+    private Admin admin;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         admin = new Admin();
         admin.setUsername("admin");
         admin.setPassword("123456");

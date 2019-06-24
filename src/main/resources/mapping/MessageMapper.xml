@@ -1,35 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.houserenting.mapper.MessageMapper">
 
-	<resultMap type="com.houserenting.entity.Message" id="MessageResult">
-		<result property="mid" column="mid"/>
-		<result property="title" column="title"/>
-		<result property="content" column="content"/>
-		<result property="time" column="time"/>
-		<result property="cid" column="cid"/>
-		<result property="rid" column="rid"/>
-	</resultMap>
+    <resultMap type="com.houserenting.entity.Message" id="MessageResult">
+        <result property="mid" column="mid"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="time" column="time"/>
 
-	<select id="getCount" resultType="int">
-		select count(*) from messages;
-	</select>
-	<select id="sel" resultMap="MessageResult" parameterType="int">
-		select * from messages where mid=#{mid}
-	</select>
-	<select id="getMessagesOfRentInfo" resultMap="MessageResult" parameterType="map">
-		select *
-		from messages where rid=#{rid} limit #{begin},#{size};
-	</select>
+        <result property="rid" column="rid"/>
+        <association property="customer" javaType="com.houserenting.entity.Customer"
+                     column="cid" select="selCustomerByCid"/>
+    </resultMap>
 
-	<insert id="add" parameterType="com.houserenting.entity.Message">
-		<selectKey keyColumn="mid" keyProperty="mid" resultType="Integer" order="AFTER">
-			select last_insert_id()
-		</selectKey>
-		insert into messages ( title, content, time, cid, rid)
-			values (#{title},#{content},#{time},#{cid},#{rid});
-	</insert>
+    <select id="selCustomerByCid" parameterType="int"
+            resultType="com.houserenting.entity.Customer">
+        select *
+        from customer
+        where cid = #{cid}
+    </select>
+    <select id="getCount" resultType="int">
+        select count(*)
+        from messages;
+    </select>
+    <select id="sel" resultMap="MessageResult" parameterType="int">
+        select *
+        from messages
+        where mid = #{mid}
+    </select>
+    <select id="getMessagesOfRentInfo" resultMap="MessageResult" parameterType="map">
+        select *
+        from messages
+        where rid = #{rid}
+        limit #{begin},#{size};
+    </select>
+
+    <insert id="add" parameterType="com.houserenting.entity.Message">
+        <selectKey keyColumn="mid" keyProperty="mid" resultType="Integer" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert into messages ( title, content, time, cid, rid)
+        values (#{title},#{content},#{time},#{customer.cid},#{rid});
+    </insert>
 
 </mapper> 
