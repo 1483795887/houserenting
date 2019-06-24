@@ -4,6 +4,7 @@ import com.houserenting.entity.RentInfo;
 import com.houserenting.mapper.CustomerMapper;
 import com.houserenting.mapper.RentInfoMapper;
 import com.houserenting.service.RentInfoService;
+import com.houserenting.utils.Limit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,14 +44,16 @@ public class RentInfoServiceImpl implements RentInfoService {
     }
 
     @Override
-    public List<RentInfo> getRentInfos(int page, int size) {
-        List<RentInfo> infos = new ArrayList<>();
-        if (page <= 0 || size <= 0)
-            return infos;
-        Map<String, Object> map = new HashMap<>();
-        map.put("begin", (page - 1) * size);
-        map.put("size", size);
-        infos = rentInfoMapper.getByPage(map);
+    public List<RentInfo> getRentInfos(Limit limit) {
+        List<RentInfo> infos ;
+        try{
+            Map<String, Object> map = new HashMap<>();
+            map.put("begin", limit.getBegin());
+            map.put("size", limit.getSize());
+            infos = rentInfoMapper.getByPage(map);
+        }catch (Exception e){
+            infos = new ArrayList<>();
+        }
         return infos;
     }
 
@@ -60,15 +63,18 @@ public class RentInfoServiceImpl implements RentInfoService {
     }
 
     @Override
-    public List<RentInfo> getRentInfosByCid(int page, int size, int cid) {
-        List<RentInfo> infos = new ArrayList<>();
-        if (page <= 0 || size <= 0)
-            return infos;
-        Map<String, Object> map = new HashMap<>();
-        map.put("cid", cid);
-        map.put("begin", (page - 1) * size);
-        map.put("size", size);
-        infos = rentInfoMapper.getByPage(map);
+    public List<RentInfo> getRentInfosByCid( int cid, Limit limit) {
+        List<RentInfo> infos;
+        try{
+            Map<String, Object> map = new HashMap<>();
+            map.put("cid", cid);
+            map.put("begin", limit.getBegin());
+            map.put("size", limit.getSize());
+            infos = rentInfoMapper.getByPage(map);
+        }catch (Exception e){
+            infos = new ArrayList<>();
+        }
+
         return infos;
     }
 }

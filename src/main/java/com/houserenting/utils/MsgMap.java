@@ -16,4 +16,12 @@ public class MsgMap extends HashMap<String, Object> {
         put("msg", msg);
     }
 
+    public void failForLackOfParam(){
+        putFailedCode("参数不全");
+    }
+
+    public void failForLimit(){
+        putFailedCode("limit 错误");
+    }
+
 }

@@ -2,11 +2,13 @@ package com.houserenting.service;
 
 import com.houserenting.entity.Customer;
 import com.houserenting.entity.RentInfo;
+import com.houserenting.utils.Limit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,8 @@ public class RentInfoServiceTest {
 
     private Customer customer;
 
+    private Limit limit;
+
     @Before
     public void setUp() {
         customer = new Customer();
@@ -30,6 +34,7 @@ public class RentInfoServiceTest {
         customer.setPassword("123456");
         customer.setTel("18696104532");
         customerService.signup(customer);
+        limit = new Limit();
     }
 
     @Test
@@ -89,13 +94,20 @@ public class RentInfoServiceTest {
         }
     }
 
+    private void setLimit(int page, int size) {
+        limit.setPage(page);
+        limit.setSize(size);
+    }
+
     @Test
     @Transactional
     public void getListWhenPageIsMinus() {
         int count = 10;
         addTestData(count);
 
-        assertEquals(0, service.getRentInfos(-1, 10).size());
+        setLimit(-1, 10);
+
+        assertEquals(0, service.getRentInfos(limit).size());
     }
 
     @Test
@@ -103,7 +115,10 @@ public class RentInfoServiceTest {
     public void getListEmptyWhenSizeIsMinus() {
         int count = 10;
         addTestData(count);
-        assertEquals(0, service.getRentInfos(1, -1).size());
+
+        setLimit(1, -1);
+
+        assertEquals(0, service.getRentInfos(limit).size());
     }
 
     @Test
@@ -118,7 +133,9 @@ public class RentInfoServiceTest {
         int page = 2 + existCount / size;
         int newCount = 4 + existCount % size;
 
-        assertEquals(newCount, service.getRentInfos(page, size).size());
+        setLimit(page, size);
+
+        assertEquals(newCount, service.getRentInfos(limit).size());
     }
 
     @Test
@@ -128,5 +145,35 @@ public class RentInfoServiceTest {
         addTestData(100);
 
         assertEquals(count + 100, service.getCount());
+    }
+
+    @Test
+    @Transactional
+    public void whenGettingRentInfosByCidThenCountRight(){
+        addTestData(100);
+
+        setLimit(1, 10);
+
+        assertEquals(10, service.getRentInfosByCid(customer.getCid(), limit).size());
+    }
+
+    @Test
+    @Transactional
+    public void whenPageMinusOfGettingRentInfosByCidThenEmpty(){
+        addTestData(100);
+
+        setLimit(-1, 10);
+
+        assertEquals(0, service.getRentInfosByCid(customer.getCid(), limit).size());
+    }
+
+    @Test
+    @Transactional
+    public void whenSizeMinueGettingRentInfosByCidThenEmpty(){
+        addTestData(100);
+
+        setLimit(1, -10);
+
+        assertEquals(0, service.getRentInfosByCid(customer.getCid(), limit).size());
     }
 }

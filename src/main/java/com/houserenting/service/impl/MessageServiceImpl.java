@@ -3,6 +3,7 @@ package com.houserenting.service.impl;
 import com.houserenting.entity.Message;
 import com.houserenting.mapper.MessageMapper;
 import com.houserenting.service.MessageService;
+import com.houserenting.utils.Limit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,11 +40,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> getMessagesOfRentInfo(int rid, int page, int size) {
+    public List<Message> getMessagesOfRentInfo(int rid, Limit limit) {
         Map<String,Object> map = new HashMap<>();
         map.put("rid",rid);
-        map.put("begin", (page - 1) * size);
-        map.put("size", size);
+        map.put("begin", limit.getBegin());
+        map.put("size", limit.getSize());
         List<Message> messages;
         try{
             messages = mapper.getMessagesOfRentInfo(map);

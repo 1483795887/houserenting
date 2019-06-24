@@ -1,6 +1,7 @@
 package com.houserenting.service;
 
 import com.houserenting.entity.RentInfo;
+import com.houserenting.utils.Limit;
 
 import java.util.List;
 
@@ -9,9 +10,9 @@ public interface RentInfoService {
 
     RentInfo getRentInfo(int rid);
 
-    List<RentInfo> getRentInfos(int page, int size);
+    List<RentInfo> getRentInfos(Limit limit);
 
     int getCount();
 
-    List<RentInfo> getRentInfosByCid(int page, int size, int cid);
+    List<RentInfo> getRentInfosByCid(int cid,Limit limit);
 }

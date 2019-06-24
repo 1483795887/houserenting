@@ -1,6 +1,7 @@
 package com.houserenting.service;
 
 import com.houserenting.entity.Message;
+import com.houserenting.utils.Limit;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ public interface MessageService {
 
     Message sel(int mid);
 
-    List<Message> getMessagesOfRentInfo(int rid, int page, int size);
+    List<Message> getMessagesOfRentInfo(int rid, Limit limit);
 }

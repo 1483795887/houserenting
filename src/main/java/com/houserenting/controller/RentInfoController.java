@@ -1,9 +1,12 @@
 package com.houserenting.controller;
 
 import com.houserenting.entity.Customer;
+import com.houserenting.entity.Message;
 import com.houserenting.entity.RentInfo;
 import com.houserenting.service.CustomerService;
+import com.houserenting.service.MessageService;
 import com.houserenting.service.RentInfoService;
+import com.houserenting.utils.Limit;
 import com.houserenting.utils.MsgMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,10 +24,15 @@ public class RentInfoController {
 
     private final CustomerService customerService;
 
+    private final MessageService messageService;
+
     @Autowired
-    public RentInfoController(RentInfoService rentInfoService, CustomerService customerService) {
+    public RentInfoController(RentInfoService rentInfoService,
+                              CustomerService customerService,
+                              MessageService messageService) {
         this.rentInfoService = rentInfoService;
         this.customerService = customerService;
+        this.messageService = messageService;
     }
 
     @RequestMapping(value = "/add")
@@ -42,18 +50,34 @@ public class RentInfoController {
     @RequestMapping(value = "/showdetail")
     public Map<String, Object> showDetail(@RequestBody Map o) {
         MsgMap msg = new MsgMap();
-        RentInfo rentInfo = rentInfoService.getRentInfo((int) o.get("rid"));
-        if (rentInfo == null)
-            msg.putFailedCode("can't get rent info");
-        else {
-            Customer customer = customerService.getCustomer(rentInfo.getCid());
-            if (customer == null) {
-                msg.putFailedCode("can't get customer of this rent");
-            } else {
-                msg.putSuccessCode();
-                msg.put("rentinfo", rentInfo);
-                msg.put("customer", customer);
+        int rid;
+        try {
+            rid = (int) o.get("rid");
+            RentInfo rentInfo = rentInfoService.getRentInfo(rid);
+            if (rentInfo == null)
+                msg.putFailedCode("can't get rent info");
+            else {
+                Limit limit  = Limit.getFromMap(o);
+                if(limit.valid()){
+                    List<Message> messages = messageService.getMessagesOfRentInfo(
+                            rid, limit);
+
+                    Customer customer = customerService.getCustomer(rentInfo.getCid());
+                    if (customer == null) {
+                        msg.putFailedCode("can't get customer of this rent");
+                    } else {
+                        msg.putSuccessCode();
+                        msg.put("rentinfo", rentInfo);
+                        msg.put("customer", customer);
+                        msg.put("message", messages);
+                    }
+                }else{
+                    msg.failForLimit();
+                }
+
             }
+        } catch (NullPointerException e) {
+            msg.failForLackOfParam();
         }
 
         return msg;
@@ -61,13 +85,20 @@ public class RentInfoController {
 
     @RequestMapping(value = "/rentinfos")
     public Map<String, Object> showRentInfos(@RequestBody Map o) {
-        int page = (int) o.get("page");
-        int size = (int) o.get("size");
-        List<RentInfo> rentInfoList = rentInfoService.getRentInfos(page, size);
-
         MsgMap msg = new MsgMap();
-        msg.putSuccessCode();
-        msg.put("list", rentInfoList);
+        try {
+            Limit limit = Limit.getFromMap(o);
+            if(limit.valid()){
+                List<RentInfo> rentInfoList = rentInfoService.getRentInfos(limit);
+                msg.putSuccessCode();
+                msg.put("list", rentInfoList);
+            }else{
+                msg.failForLimit();
+            }
+
+        } catch (NullPointerException e) {
+            msg.failForLackOfParam();
+        }
 
         return msg;
 
@@ -83,15 +114,23 @@ public class RentInfoController {
 
     @RequestMapping(value = "/rentinfosbycid")
     public Map<String, Object> showRentInfosOfCustomer(@RequestBody Map o) {
-        int page = (int) o.get("page");
-        int size = (int) o.get("size");
-        int cid = (int) o.get("cid");
-
-        List<RentInfo> rentInfos = rentInfoService.getRentInfosByCid(page, size, cid);
-
         MsgMap msg = new MsgMap();
-        msg.putSuccessCode();
-        msg.put("list", rentInfos);
+        try{
+
+            int cid = (int) o.get("cid");
+            Limit limit = Limit.getFromMap(o);
+            if(limit.valid()){
+                List<RentInfo> rentInfos = rentInfoService.getRentInfosByCid(
+                        cid,limit);
+
+                msg.putSuccessCode();
+                msg.put("list", rentInfos);
+            }else
+                msg.failForLimit();
+
+        }catch (NullPointerException e){
+            msg.failForLackOfParam();
+        }
 
         return msg;
     }

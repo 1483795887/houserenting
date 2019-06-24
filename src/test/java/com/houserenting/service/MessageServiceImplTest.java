@@ -3,6 +3,7 @@ package com.houserenting.service;
 import com.houserenting.entity.Customer;
 import com.houserenting.entity.Message;
 import com.houserenting.entity.RentInfo;
+import com.houserenting.utils.Limit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,8 @@ public class MessageServiceImplTest {
     private Customer customer;
     private RentInfo rentInfo;
 
+    private Limit limit;
+
     @Before
     public void setUp() {
         customer = new Customer();
@@ -39,6 +42,8 @@ public class MessageServiceImplTest {
         rentInfo.setHuxing("huxing");
         rentInfo.setCid(customer.getCid());
         rentInfoService.addRentInfo(rentInfo);
+
+        limit = new Limit();
     }
 
     @Test
@@ -99,12 +104,19 @@ public class MessageServiceImplTest {
         }
     }
 
+    private void setLimit(int page, int size){
+        limit.setPage(page);
+        limit.setSize(size);
+    }
+
     @Test
     @Transactional
     public void whenPageMinusOfGettingMessageListThenEmpty() {
         addTestData(10);
 
-        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),-1,10).size(),
+        setLimit(-1, 10);
+
+        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),limit).size(),
                 0);
 
     }
@@ -114,7 +126,9 @@ public class MessageServiceImplTest {
     public void whenPageOverOfGettingMessageListThenEmpty(){
         addTestData(10);
 
-        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),-1,10).size(),
+        setLimit(100,10);
+
+        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),limit).size(),
                 0);
     }
 
@@ -123,7 +137,9 @@ public class MessageServiceImplTest {
     public void whenSizeMinusOfGettingMessageListThenEmpty(){
         addTestData(10);
 
-        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),-1,10).size(),
+        setLimit(10, -1);
+
+        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),limit).size(),
                 0);
     }
 
@@ -132,7 +148,9 @@ public class MessageServiceImplTest {
     public void whenRentInfoNotExistOfGettingMessageListThenEmpty(){
         addTestData(10);
 
-        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),-1,10).size(),
+        setLimit(1,10);
+
+        assertEquals(service.getMessagesOfRentInfo(0,limit).size(),
                 0);
     }
 
@@ -141,8 +159,10 @@ public class MessageServiceImplTest {
     public void whenGettingMessageListThenCountRight(){
         addTestData(10);
 
+        setLimit(1, 10);
+
         assertEquals(
-                service.getMessagesOfRentInfo(rentInfo.getRid(),1,10).size(),
+                service.getMessagesOfRentInfo(rentInfo.getRid(),limit).size(),
                 10);
     }
 }
