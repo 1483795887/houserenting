@@ -12,7 +12,7 @@ public interface RentInfoMapper {
 
     void add(RentInfo rentInfo);
 
-    List<RentInfo> getByPage(Map<String, Object> map);
+    List<RentInfo> getExaminedByPage(Map<String, Object> map);
 
     int getCount();
 

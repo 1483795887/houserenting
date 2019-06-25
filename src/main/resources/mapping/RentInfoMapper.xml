@@ -23,9 +23,10 @@
         where rid = #{rid}
     </select>
 
-    <select id="getByPage" resultMap="RentInfoResult" parameterType="map">
+    <select id="getExaminedByPage" resultMap="RentInfoResult" parameterType="map">
         select *
         from rent_info
+        where examined=1
         limit #{begin},#{size}
     </select>
     <select id="getRentInfosByCid" resultMap="RentInfoResult" parameterType="map">

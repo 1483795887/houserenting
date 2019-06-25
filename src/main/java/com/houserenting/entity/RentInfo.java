@@ -1,6 +1,10 @@
 package com.houserenting.entity;
 
 public class RentInfo {
+
+    public final static int EXAMED = 1;
+    public final static int UNEXAMED = 0;
+
     private int rid;
     private int cid;
     private String huxing;

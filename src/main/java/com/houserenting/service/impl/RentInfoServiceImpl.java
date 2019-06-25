@@ -50,7 +50,7 @@ public class RentInfoServiceImpl implements RentInfoService {
             Map<String, Object> map = new HashMap<>();
             map.put("begin", limit.getBegin());
             map.put("size", limit.getSize());
-            infos = rentInfoMapper.getByPage(map);
+            infos = rentInfoMapper.getExaminedByPage(map);
         }catch (Exception e){
             infos = new ArrayList<>();
         }
@@ -70,7 +70,7 @@ public class RentInfoServiceImpl implements RentInfoService {
             map.put("cid", cid);
             map.put("begin", limit.getBegin());
             map.put("size", limit.getSize());
-            infos = rentInfoMapper.getByPage(map);
+            infos = rentInfoMapper.getExaminedByPage(map);
         }catch (Exception e){
             infos = new ArrayList<>();
         }

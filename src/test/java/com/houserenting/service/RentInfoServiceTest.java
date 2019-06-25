@@ -12,6 +12,8 @@ import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -89,6 +91,7 @@ public class RentInfoServiceTest {
             RentInfo rentInfo = new RentInfo();
             rentInfo.setHuxing(String.format("%d", i));
             rentInfo.setCid(customer.getCid());
+            rentInfo.setExamined(RentInfo.EXAMED);
 
             service.addRentInfo(rentInfo);
         }
@@ -126,12 +129,16 @@ public class RentInfoServiceTest {
     public void getListSizeRight() {
         int existCount = service.getCount();
 
+        setLimit(0, existCount);
+        List<RentInfo> infos = service.getRentInfos(limit);
+        int examinedCount = infos.size();
+
         int count = 10;
         addTestData(count);
 
         int size = 6;
-        int page = 2 + existCount / size;
-        int newCount = 4 + existCount % size;
+        int page = 2 + examinedCount / size;
+        int newCount = 4 + examinedCount % size;
 
         setLimit(page, size);
 

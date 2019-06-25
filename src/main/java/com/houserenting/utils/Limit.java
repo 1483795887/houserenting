@@ -28,7 +28,7 @@ public class Limit {
         Limit limit = new Limit();
         try{
             limit.setPage(Integer.parseInt((String)o.get("page")));
-            limit.setSize(Integer.parseInt((String)o.get("page")));
+            limit.setSize(Integer.parseInt((String)o.get("size")));
         }catch (Exception e){
             limit.setPage(1);
             limit.setSize(DEFAULT_SIZE);
