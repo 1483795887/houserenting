@@ -43,14 +43,19 @@ public class RentInfoServiceImpl implements RentInfoService {
         return rentInfoMapper.sel(rid);
     }
 
+    private Map<String,Object> makeMap(Limit limit){
+        Map<String, Object> map = new HashMap<>();
+        map.put("begin", limit.getBegin());
+        map.put("size", limit.getSize());
+        map.put("examined",RentInfo.EXAMED);
+        return map;
+    }
+
     @Override
     public List<RentInfo> getRentInfos(Limit limit) {
         List<RentInfo> infos ;
         try{
-            Map<String, Object> map = new HashMap<>();
-            map.put("begin", limit.getBegin());
-            map.put("size", limit.getSize());
-            infos = rentInfoMapper.getExaminedByPage(map);
+            infos = rentInfoMapper.getByPage(makeMap(limit));
         }catch (Exception e){
             infos = new ArrayList<>();
         }
@@ -66,11 +71,9 @@ public class RentInfoServiceImpl implements RentInfoService {
     public List<RentInfo> getRentInfosByCid( int cid, Limit limit) {
         List<RentInfo> infos;
         try{
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = makeMap(limit);
             map.put("cid", cid);
-            map.put("begin", limit.getBegin());
-            map.put("size", limit.getSize());
-            infos = rentInfoMapper.getExaminedByPage(map);
+            infos = rentInfoMapper.getRentInfosByCid(map);
         }catch (Exception e){
             infos = new ArrayList<>();
         }

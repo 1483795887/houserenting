@@ -119,16 +119,25 @@ public class RentInfoMapperTest {
         }
     }
 
-    private Map<String, Object> makeLimit(int begin, int size) {
+    private Map<String, Object> makeMap(int begin, int size, int examined) {
         Map<String, Object> map = new HashMap<>();
         map.put("begin", begin);
         map.put("size", size);
+        map.put("examined",examined);
         return map;
     }
 
     private int getExaminedCount(){
         int count = rentInfoMapper.getCount();
-        List<RentInfo> rentInfos = rentInfoMapper.getExaminedByPage(makeLimit(0,count));
+        List<RentInfo> rentInfos = rentInfoMapper.getByPage(
+                makeMap(0,count,RentInfo.EXAMED));
+        return rentInfos.size();
+    }
+
+    private int getUnExaminedCount(){
+        int count = rentInfoMapper.getCount();
+        List<RentInfo> rentInfos = rentInfoMapper.getByPage(
+                makeMap(0,count,RentInfo.UNEXAMED));
         return rentInfos.size();
     }
 
@@ -142,8 +151,8 @@ public class RentInfoMapperTest {
 
         int size = count + existCount + 5;
 
-        List<RentInfo> rentInfos = rentInfoMapper.getExaminedByPage(
-                makeLimit(0,size));
+        List<RentInfo> rentInfos = rentInfoMapper.getByPage(
+                makeMap(0,size,RentInfo.EXAMED));
 
         assertEquals(rentInfos.size(), count + examinedCount);
     }
@@ -161,7 +170,7 @@ public class RentInfoMapperTest {
         int begin = 10 + examinedCount;
         int size = 10;
 
-        List<RentInfo> rentInfos = rentInfoMapper.getExaminedByPage(makeLimit(begin, size));
+        List<RentInfo> rentInfos = rentInfoMapper.getByPage(makeMap(begin, size, RentInfo.EXAMED));
         assertEquals(rentInfos.get(0).getHuxing(), "10");
     }
 
@@ -181,7 +190,7 @@ public class RentInfoMapperTest {
         int count = 100;
         addTestDataExamined(100);
 
-        Map<String, Object> map = makeLimit(0,10);
+        Map<String, Object> map = makeMap(0,10,RentInfo.EXAMED);
         map.put("cid", customer.getCid());
 
         assertEquals(10, rentInfoMapper.getRentInfosByCid(map).size());
@@ -193,7 +202,7 @@ public class RentInfoMapperTest {
         int count = 100;
         addTestDataExamined(100);
 
-        Map<String, Object> map = makeLimit(0, 10111);
+        Map<String, Object> map = makeMap(0, 10111,RentInfo.EXAMED);
         map.put("cid", customer.getCid());
 
         assertEquals(count, rentInfoMapper.getRentInfosByCid(map).size());
@@ -203,14 +212,14 @@ public class RentInfoMapperTest {
     @Transactional
     public void noUmExaminedInfoWhenGetRentInfosThenCountZero() {
         int count = rentInfoMapper.getCount();
-        List<RentInfo> exist = rentInfoMapper.getExaminedByPage(makeLimit(0,count));
+        List<RentInfo> exist = rentInfoMapper.getByPage(makeMap(0,count,RentInfo.EXAMED));
 
         int examinedCount = exist.size();
 
         addTestDataUnExamined(100);
 
-        exist = rentInfoMapper.getExaminedByPage(
-                makeLimit(0, count + 100));
+        exist = rentInfoMapper.getByPage(
+                makeMap(0, count + 100,RentInfo.EXAMED));
 
         assertEquals(examinedCount,exist.size());
 
@@ -220,17 +229,34 @@ public class RentInfoMapperTest {
     @Transactional
     public void bothExaminedAndUnexaminedWhenGetRentInfosThenCountRight() {
         int count = rentInfoMapper.getCount();
-        List<RentInfo> exist = rentInfoMapper.getExaminedByPage(makeLimit(0,count));
+        List<RentInfo> exist = rentInfoMapper.getByPage(makeMap(0,count,RentInfo.EXAMED));
 
         int examinedCount = exist.size();
 
         addTestDataUnExamined(100);
-        addTestDataExamined(100);
+        addTestDataExamined(200);
 
-        exist = rentInfoMapper.getExaminedByPage(
-                makeLimit(0, count + 200));
+        exist = rentInfoMapper.getByPage(
+                makeMap(0, count + 300,RentInfo.EXAMED));
 
-        assertEquals(examinedCount + 100,exist.size());
+        assertEquals(examinedCount + 200,exist.size());
+
+    }
+
+    @Test
+    @Transactional
+    public void bothExaminedAndUnexaminedWhenGetUnExaminedRentInfosThenCountRight() {
+        int count = rentInfoMapper.getCount();
+
+        int unexaminedCount = getUnExaminedCount();
+
+        addTestDataUnExamined(100);
+        addTestDataExamined(200);
+
+        List<RentInfo> rentInfos = rentInfoMapper.getByPage(
+                makeMap(0, count + 300,RentInfo.UNEXAMED));
+
+        assertEquals(unexaminedCount + 100,rentInfos.size());
 
     }
 }

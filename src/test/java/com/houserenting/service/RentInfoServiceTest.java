@@ -129,7 +129,7 @@ public class RentInfoServiceTest {
     public void getListSizeRight() {
         int existCount = service.getCount();
 
-        setLimit(0, existCount);
+        setLimit(1, existCount);
         List<RentInfo> infos = service.getRentInfos(limit);
         int examinedCount = infos.size();
 
