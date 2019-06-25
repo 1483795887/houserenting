@@ -1,10 +1,12 @@
 package com.houserenting.service.impl;
 
+import com.houserenting.entity.Customer;
 import com.houserenting.entity.RentInfo;
 import com.houserenting.mapper.CustomerMapper;
 import com.houserenting.mapper.RentInfoMapper;
 import com.houserenting.service.RentInfoService;
 import com.houserenting.utils.Limit;
+import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,15 +67,6 @@ public class RentInfoServiceImpl implements RentInfoService {
     @Override
     public List<RentInfo> getRentInfos(Limit limit) {
         return getRentInfos(limit, RentInfo.EXAMED);
-        /*List<RentInfo> infos ;
-        try{
-            Map<String,Object> map = makeMap(limit);
-            map.put("examined",RentInfo.EXAMED);
-            infos = rentInfoMapper.getByPage(map);
-        }catch (Exception e){
-            infos = new ArrayList<>();
-        }
-        return infos;*/
     }
 
     @Override
@@ -97,7 +90,16 @@ public class RentInfoServiceImpl implements RentInfoService {
     }
 
     @Override
-    public List<RentInfo> getUnexamedInfos(Limit limit) {
-        return getRentInfos(limit, RentInfo.UNEXAMED);
+    public List<Map<String, Object>> getUnexaminedInfos(Limit limit) {
+        List<Map<String,Object>> maps = new ArrayList<>();
+        List<RentInfo> infos = getRentInfos(limit, RentInfo.UNEXAMED);
+        for(RentInfo info:infos){
+            Map<String,Object> map = new HashMap<>();
+            map.put("rentinfo",info);
+            Customer customer = customerMapper.sel(info.getCid());
+            map.put("customer",customer);
+            maps.add(map);
+        }
+        return maps;
     }
 }

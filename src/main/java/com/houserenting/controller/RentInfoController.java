@@ -133,4 +133,33 @@ public class RentInfoController {
 
         return msg;
     }
+
+    @RequestMapping(value = "/unexamined")
+    public Map<String, Object> showUnExaminedRentInfos(@RequestBody Map o) {
+        MsgMap msg = new MsgMap();
+        try {
+            Limit limit = Limit.getFromMap(o);
+            if(limit.valid()){
+                List<Map<String,Object>> rentInfoList = rentInfoService.getUnexaminedInfos(limit);
+                msg.putSuccessCode();
+                msg.put("list", rentInfoList);
+            }else{
+                msg.failForLimit();
+            }
+
+        } catch (NullPointerException e) {
+            msg.failForLackOfParam();
+        }
+
+        return msg;
+
+    }
+
+    @RequestMapping(value = "/examine")
+    public Map<String,Object> examine(@RequestBody Map o){
+        MsgMap map = new MsgMap();
+
+        map.putSuccessCode();
+        return map;
+    }
 }

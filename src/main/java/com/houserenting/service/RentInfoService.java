@@ -4,6 +4,7 @@ import com.houserenting.entity.RentInfo;
 import com.houserenting.utils.Limit;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RentInfoService {
     boolean addRentInfo(RentInfo rentInfo);
@@ -16,5 +17,5 @@ public interface RentInfoService {
 
     List<RentInfo> getRentInfosByCid(int cid,Limit limit);
 
-    List<RentInfo> getUnexamedInfos(Limit limit);
+    List<Map<String,Object>> getUnexaminedInfos(Limit limit);
 }

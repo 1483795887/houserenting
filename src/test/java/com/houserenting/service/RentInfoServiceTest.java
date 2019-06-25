@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -220,7 +221,7 @@ public class RentInfoServiceTest {
         int existCount = service.getCount();
 
         setLimit(1, existCount);
-        List<RentInfo> infos = service.getUnexamedInfos(limit);
+        List<Map<String,Object>> infos = service.getUnexaminedInfos(limit);
         int unexaminedCount = infos.size();
 
         int count = 10;
@@ -232,7 +233,7 @@ public class RentInfoServiceTest {
 
         setLimit(page, size);
 
-        assertEquals(newCount, service.getUnexamedInfos(limit).size());
+        assertEquals(newCount, service.getUnexaminedInfos(limit).size());
     }
 
 }
