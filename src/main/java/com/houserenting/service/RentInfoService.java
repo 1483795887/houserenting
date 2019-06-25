@@ -15,4 +15,6 @@ public interface RentInfoService {
     int getCount();
 
     List<RentInfo> getRentInfosByCid(int cid,Limit limit);
+
+    List<RentInfo> getUnexamedInfos(Limit limit);
 }

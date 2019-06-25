@@ -47,19 +47,33 @@ public class RentInfoServiceImpl implements RentInfoService {
         Map<String, Object> map = new HashMap<>();
         map.put("begin", limit.getBegin());
         map.put("size", limit.getSize());
-        map.put("examined",RentInfo.EXAMED);
         return map;
     }
 
-    @Override
-    public List<RentInfo> getRentInfos(Limit limit) {
+    private List<RentInfo> getRentInfos(Limit limit, int examined){
         List<RentInfo> infos ;
         try{
-            infos = rentInfoMapper.getByPage(makeMap(limit));
+            Map<String,Object> map = makeMap(limit);
+            map.put("examined",examined);
+            infos = rentInfoMapper.getByPage(map);
         }catch (Exception e){
             infos = new ArrayList<>();
         }
         return infos;
+    }
+
+    @Override
+    public List<RentInfo> getRentInfos(Limit limit) {
+        return getRentInfos(limit, RentInfo.EXAMED);
+        /*List<RentInfo> infos ;
+        try{
+            Map<String,Object> map = makeMap(limit);
+            map.put("examined",RentInfo.EXAMED);
+            infos = rentInfoMapper.getByPage(map);
+        }catch (Exception e){
+            infos = new ArrayList<>();
+        }
+        return infos;*/
     }
 
     @Override
@@ -73,11 +87,17 @@ public class RentInfoServiceImpl implements RentInfoService {
         try{
             Map<String, Object> map = makeMap(limit);
             map.put("cid", cid);
+            map.put("examined",RentInfo.EXAMED);
             infos = rentInfoMapper.getRentInfosByCid(map);
         }catch (Exception e){
             infos = new ArrayList<>();
         }
 
         return infos;
+    }
+
+    @Override
+    public List<RentInfo> getUnexamedInfos(Limit limit) {
+        return getRentInfos(limit, RentInfo.UNEXAMED);
     }
 }

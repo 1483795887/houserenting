@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,12 +85,20 @@ public class RentInfoServiceTest {
 
     }
 
-    private void addTestData(int count) {
+    private void addExaminedTestData(int count) {
+        addTestData(count, RentInfo.EXAMED);
+    }
+
+    private void addUnExaminedTestData(int count){
+        addTestData(count, RentInfo.UNEXAMED);
+    }
+
+    private void addTestData(int count, int examined){
         for (int i = 0; i < count; i++) {
             RentInfo rentInfo = new RentInfo();
             rentInfo.setHuxing(String.format("%d", i));
             rentInfo.setCid(customer.getCid());
-            rentInfo.setExamined(RentInfo.EXAMED);
+            rentInfo.setExamined(examined);
 
             service.addRentInfo(rentInfo);
         }
@@ -106,7 +113,7 @@ public class RentInfoServiceTest {
     @Transactional
     public void getListWhenPageIsMinus() {
         int count = 10;
-        addTestData(count);
+        addExaminedTestData(count);
 
         setLimit(-1, 10);
 
@@ -117,7 +124,7 @@ public class RentInfoServiceTest {
     @Transactional
     public void getListEmptyWhenSizeIsMinus() {
         int count = 10;
-        addTestData(count);
+        addExaminedTestData(count);
 
         setLimit(1, -1);
 
@@ -134,7 +141,7 @@ public class RentInfoServiceTest {
         int examinedCount = infos.size();
 
         int count = 10;
-        addTestData(count);
+        addExaminedTestData(count);
 
         int size = 6;
         int page = 2 + examinedCount / size;
@@ -149,7 +156,7 @@ public class RentInfoServiceTest {
     @Transactional
     public void testGetCount() {
         int count = service.getCount();
-        addTestData(100);
+        addExaminedTestData(100);
 
         assertEquals(count + 100, service.getCount());
     }
@@ -157,7 +164,7 @@ public class RentInfoServiceTest {
     @Test
     @Transactional
     public void whenGettingRentInfosByCidThenCountRight(){
-        addTestData(100);
+        addExaminedTestData(100);
 
         setLimit(1, 10);
 
@@ -167,7 +174,7 @@ public class RentInfoServiceTest {
     @Test
     @Transactional
     public void whenPageMinusOfGettingRentInfosByCidThenEmpty(){
-        addTestData(100);
+        addExaminedTestData(100);
 
         setLimit(-1, 10);
 
@@ -176,11 +183,56 @@ public class RentInfoServiceTest {
 
     @Test
     @Transactional
-    public void whenSizeMinueGettingRentInfosByCidThenEmpty(){
-        addTestData(100);
+    public void whenSizeMinusGettingRentInfosByCidThenEmpty(){
+        addExaminedTestData(100);
 
         setLimit(1, -10);
 
         assertEquals(0, service.getRentInfosByCid(customer.getCid(), limit).size());
     }
+
+
+    @Test
+    @Transactional
+    public void getListUnExaminedWhenPageIsMinus() {
+        int count = 10;
+        addUnExaminedTestData(count);
+
+        setLimit(-1, 10);
+
+        assertEquals(0, service.getRentInfos(limit).size());
+    }
+
+    @Test
+    @Transactional
+    public void getListUnExaminedEmptyWhenSizeIsMinus() {
+        int count = 10;
+        addUnExaminedTestData(count);
+
+        setLimit(1, -1);
+
+        assertEquals(0, service.getRentInfos(limit).size());
+    }
+
+    @Test
+    @Transactional
+    public void getListUnExaminedSizeRight() {
+        int existCount = service.getCount();
+
+        setLimit(1, existCount);
+        List<RentInfo> infos = service.getUnexamedInfos(limit);
+        int unexaminedCount = infos.size();
+
+        int count = 10;
+        addUnExaminedTestData(count);
+
+        int size = 6;
+        int page = 2 + unexaminedCount / size;
+        int newCount = 4 + unexaminedCount % size;
+
+        setLimit(page, size);
+
+        assertEquals(newCount, service.getUnexamedInfos(limit).size());
+    }
+
 }
