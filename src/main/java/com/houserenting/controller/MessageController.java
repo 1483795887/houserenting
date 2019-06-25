@@ -29,8 +29,8 @@ public class MessageController {
             String title = (String)o.get("title");
             String content = (String)o.get("content");
             String time = (String)o.get("time");
-            int cid = (int)o.get("cid");
-            int rid = (int)o.get("rid");
+            int cid =  Integer.parseInt((String)o.get("cid"));
+            int rid = Integer.parseInt((String)o.get("rid"));
             Customer customer = new Customer();
             customer.setCid(cid);
 
@@ -46,7 +46,7 @@ public class MessageController {
                 msg.putSuccessCode();
             else
                 msg.putFailedCode("add message failed");
-        }catch (NullPointerException e){
+        }catch (Exception e){
             msg.failForLackOfParam();
         }
         return msg;

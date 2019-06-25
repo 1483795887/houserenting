@@ -52,7 +52,7 @@ public class RentInfoController {
         MsgMap msg = new MsgMap();
         int rid;
         try {
-            rid = (int) o.get("rid");
+            rid = Integer.parseInt((String)o.get("rid"));
             RentInfo rentInfo = rentInfoService.getRentInfo(rid);
             if (rentInfo == null)
                 msg.putFailedCode("can't get rent info");
@@ -116,8 +116,7 @@ public class RentInfoController {
     public Map<String, Object> showRentInfosOfCustomer(@RequestBody Map o) {
         MsgMap msg = new MsgMap();
         try{
-
-            int cid = (int) o.get("cid");
+            int cid = Integer.parseInt((String)o.get("cid"));
             Limit limit = Limit.getFromMap(o);
             if(limit.valid()){
                 List<RentInfo> rentInfos = rentInfoService.getRentInfosByCid(
@@ -128,7 +127,7 @@ public class RentInfoController {
             }else
                 msg.failForLimit();
 
-        }catch (NullPointerException e){
+        }catch (Exception e){
             msg.failForLackOfParam();
         }
 
