@@ -18,19 +18,19 @@ public class MessageController {
     private final MessageService service;
 
     @Autowired
-    public MessageController(MessageService service){
+    public MessageController(MessageService service) {
         this.service = service;
     }
 
     @RequestMapping("/add")
-    public Map<String,Object> addMessage(@RequestBody Map o){
+    public Map<String, Object> addMessage(@RequestBody Map o) {
         MsgMap msg = new MsgMap();
-        try{
-            String title = (String)o.get("title");
-            String content = (String)o.get("content");
-            String time = (String)o.get("time");
-            int cid =  Integer.parseInt((String)o.get("cid"));
-            int rid = Integer.parseInt((String)o.get("rid"));
+        try {
+            String title = (String) o.get("title");
+            String content = (String) o.get("content");
+            String time = (String) o.get("time");
+            int cid = Integer.parseInt((String) o.get("cid"));
+            int rid = Integer.parseInt((String) o.get("rid"));
             Customer customer = new Customer();
             customer.setCid(cid);
 
@@ -42,13 +42,26 @@ public class MessageController {
             message.setContent(content);
 
             boolean result = service.add(message);
-            if(result)
+            if (result)
                 msg.putSuccessCode();
             else
                 msg.putFailedCode("add message failed");
-        }catch (Exception e){
+        } catch (Exception e) {
             msg.failForLackOfParam();
         }
         return msg;
+    }
+
+    @RequestMapping("/delete")
+    public Map<String, Object> delete(@RequestBody Map o) {
+        MsgMap map = new MsgMap();
+        try {
+            int mid = Integer.parseInt((String) o.get("mid"));
+            service.delete(mid);
+            map.putSuccessCode();
+        } catch (Exception e) {
+            map.failForLackOfParam();
+        }
+        return map;
     }
 }

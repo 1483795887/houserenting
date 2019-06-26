@@ -90,11 +90,11 @@ public class RentInfoServiceTest {
         addTestData(count, RentInfo.EXAMED);
     }
 
-    private void addUnExaminedTestData(int count){
+    private void addUnExaminedTestData(int count) {
         addTestData(count, RentInfo.UNEXAMED);
     }
 
-    private void addTestData(int count, int examined){
+    private void addTestData(int count, int examined) {
         for (int i = 0; i < count; i++) {
             RentInfo rentInfo = new RentInfo();
             rentInfo.setHuxing(String.format("%d", i));
@@ -148,7 +148,7 @@ public class RentInfoServiceTest {
         int page = 2 + examinedCount / size;
         int newCount = 4 + examinedCount % size;
 
-        if(newCount > size)
+        if (newCount > size)
             newCount = size;
 
         setLimit(page, size);
@@ -167,7 +167,7 @@ public class RentInfoServiceTest {
 
     @Test
     @Transactional
-    public void whenGettingRentInfosByCidThenCountRight(){
+    public void whenGettingRentInfosByCidThenCountRight() {
         addExaminedTestData(100);
 
         setLimit(1, 10);
@@ -177,7 +177,7 @@ public class RentInfoServiceTest {
 
     @Test
     @Transactional
-    public void whenPageMinusOfGettingRentInfosByCidThenEmpty(){
+    public void whenPageMinusOfGettingRentInfosByCidThenEmpty() {
         addExaminedTestData(100);
 
         setLimit(-1, 10);
@@ -187,7 +187,7 @@ public class RentInfoServiceTest {
 
     @Test
     @Transactional
-    public void whenSizeMinusGettingRentInfosByCidThenEmpty(){
+    public void whenSizeMinusGettingRentInfosByCidThenEmpty() {
         addExaminedTestData(100);
 
         setLimit(1, -10);
@@ -224,7 +224,7 @@ public class RentInfoServiceTest {
         int existCount = service.getCount();
 
         setLimit(1, existCount);
-        List<Map<String,Object>> infos = service.getUnexaminedInfos(limit);
+        List<Map<String, Object>> infos = service.getUnexaminedInfos(limit);
         int unexaminedCount = infos.size();
 
         int count = 10;
@@ -232,9 +232,9 @@ public class RentInfoServiceTest {
 
         int size = 6;
         int page = 2 + unexaminedCount / size;
-        int newCount = 4 + unexaminedCount % size ;
+        int newCount = 4 + unexaminedCount % size;
 
-        if(newCount > size)
+        if (newCount > size)
             newCount = size;
 
         setLimit(page, size);

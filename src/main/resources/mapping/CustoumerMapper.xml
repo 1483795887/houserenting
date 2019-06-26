@@ -48,9 +48,4 @@
         insert into customer (username, password, realname, sex, age, address, tel)
         values (#{username},#{password},#{realname},#{sex},#{age},#{address},#{tel})
     </insert>
-    <delete id="delete" parameterType="Integer">
-        delete
-        from customer
-        where cid = #{value}
-    </delete>
 </mapper> 

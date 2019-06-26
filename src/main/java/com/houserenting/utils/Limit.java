@@ -3,10 +3,21 @@ package com.houserenting.utils;
 import java.util.Map;
 
 public class Limit {
+    private final static int DEFAULT_SIZE = 10;
     private int page;
     private int size;
 
-    private final static int DEFAULT_SIZE = 10;
+    public static Limit getFromMap(Map o) {
+        Limit limit = new Limit();
+        try {
+            limit.setPage(Integer.parseInt((String) o.get("page")));
+            limit.setSize(Integer.parseInt((String) o.get("size")));
+        } catch (Exception e) {
+            limit.setPage(1);
+            limit.setSize(DEFAULT_SIZE);
+        }
+        return limit;
+    }
 
     public int getPage() {
         return page;
@@ -24,23 +35,11 @@ public class Limit {
         this.size = size;
     }
 
-    public static Limit getFromMap(Map o){
-        Limit limit = new Limit();
-        try{
-            limit.setPage(Integer.parseInt((String)o.get("page")));
-            limit.setSize(Integer.parseInt((String)o.get("size")));
-        }catch (Exception e){
-            limit.setPage(1);
-            limit.setSize(DEFAULT_SIZE);
-        }
-        return limit;
-    }
-
-    public int getBegin(){
+    public int getBegin() {
         return (page - 1) * size;
     }
 
-    public boolean valid(){
+    public boolean valid() {
         return page >= 1 && size >= 1;
     }
 }

@@ -15,4 +15,6 @@ public interface MessageMapper {
     Message sel(int mid);
 
     List<Message> getMessagesOfRentInfo(Map<String, Object> map);
+
+    void delete(int mid);
 }

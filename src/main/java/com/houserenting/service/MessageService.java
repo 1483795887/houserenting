@@ -11,4 +11,6 @@ public interface MessageService {
     Message sel(int mid);
 
     List<Message> getMessagesOfRentInfo(int rid, Limit limit);
+
+    void delete(int mid);
 }

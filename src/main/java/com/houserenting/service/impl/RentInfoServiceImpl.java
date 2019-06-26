@@ -6,7 +6,6 @@ import com.houserenting.mapper.CustomerMapper;
 import com.houserenting.mapper.RentInfoMapper;
 import com.houserenting.service.RentInfoService;
 import com.houserenting.utils.Limit;
-import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,20 +44,20 @@ public class RentInfoServiceImpl implements RentInfoService {
         return rentInfoMapper.sel(rid);
     }
 
-    private Map<String,Object> makeMap(Limit limit){
+    private Map<String, Object> makeMap(Limit limit) {
         Map<String, Object> map = new HashMap<>();
         map.put("begin", limit.getBegin());
         map.put("size", limit.getSize());
         return map;
     }
 
-    private List<RentInfo> getRentInfos(Limit limit, int examined){
-        List<RentInfo> infos ;
-        try{
-            Map<String,Object> map = makeMap(limit);
-            map.put("examined",examined);
+    private List<RentInfo> getRentInfos(Limit limit, int examined) {
+        List<RentInfo> infos;
+        try {
+            Map<String, Object> map = makeMap(limit);
+            map.put("examined", examined);
             infos = rentInfoMapper.getByPage(map);
-        }catch (Exception e){
+        } catch (Exception e) {
             infos = new ArrayList<>();
         }
         return infos;
@@ -75,14 +74,14 @@ public class RentInfoServiceImpl implements RentInfoService {
     }
 
     @Override
-    public List<RentInfo> getRentInfosByCid( int cid, Limit limit) {
+    public List<RentInfo> getRentInfosByCid(int cid, Limit limit) {
         List<RentInfo> infos;
-        try{
+        try {
             Map<String, Object> map = makeMap(limit);
             map.put("cid", cid);
-            map.put("examined",RentInfo.EXAMED);
+            map.put("examined", RentInfo.EXAMED);
             infos = rentInfoMapper.getRentInfosByCid(map);
-        }catch (Exception e){
+        } catch (Exception e) {
             infos = new ArrayList<>();
         }
 
@@ -91,13 +90,13 @@ public class RentInfoServiceImpl implements RentInfoService {
 
     @Override
     public List<Map<String, Object>> getUnexaminedInfos(Limit limit) {
-        List<Map<String,Object>> maps = new ArrayList<>();
+        List<Map<String, Object>> maps = new ArrayList<>();
         List<RentInfo> infos = getRentInfos(limit, RentInfo.UNEXAMED);
-        for(RentInfo info:infos){
-            Map<String,Object> map = new HashMap<>();
-            map.put("rentinfo",info);
+        for (RentInfo info : infos) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("rentinfo", info);
             Customer customer = customerMapper.sel(info.getCid());
-            map.put("customer",customer);
+            map.put("customer", customer);
             maps.add(map);
         }
         return maps;

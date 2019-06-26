@@ -24,7 +24,7 @@ public class CustomerMapperTest {
     private Customer customer;
 
     @Before
-    public void setUp()  {
+    public void setUp() {
         customer = new Customer();
         customer.setUsername("username");
         customer.setPassword("password");
@@ -85,14 +85,6 @@ public class CustomerMapperTest {
     @Transactional
     public void addedDataIsRight() {
         assertTrue(equal(customer, mapper.sel(customer.getCid())));
-    }
-
-    @Test
-    @Transactional
-    public void afterDeleteTheCountIfRight() {
-        int count = mapper.getCount();
-        mapper.delete(customer.getCid());
-        assertEquals("deleteFailed", count - 1, mapper.getCount());
     }
 
     @Test

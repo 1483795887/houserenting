@@ -104,7 +104,7 @@ public class MessageServiceImplTest {
         }
     }
 
-    private void setLimit(int page, int size){
+    private void setLimit(int page, int size) {
         limit.setPage(page);
         limit.setSize(size);
     }
@@ -116,53 +116,53 @@ public class MessageServiceImplTest {
 
         setLimit(-1, 10);
 
-        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),limit).size(),
+        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(), limit).size(),
                 0);
 
     }
 
     @Test
     @Transactional
-    public void whenPageOverOfGettingMessageListThenEmpty(){
+    public void whenPageOverOfGettingMessageListThenEmpty() {
         addTestData(10);
 
-        setLimit(100,10);
+        setLimit(100, 10);
 
-        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),limit).size(),
+        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(), limit).size(),
                 0);
     }
 
     @Test
     @Transactional
-    public void whenSizeMinusOfGettingMessageListThenEmpty(){
+    public void whenSizeMinusOfGettingMessageListThenEmpty() {
         addTestData(10);
 
         setLimit(10, -1);
 
-        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(),limit).size(),
+        assertEquals(service.getMessagesOfRentInfo(rentInfo.getRid(), limit).size(),
                 0);
     }
 
     @Test
     @Transactional
-    public void whenRentInfoNotExistOfGettingMessageListThenEmpty(){
+    public void whenRentInfoNotExistOfGettingMessageListThenEmpty() {
         addTestData(10);
 
-        setLimit(1,10);
+        setLimit(1, 10);
 
-        assertEquals(service.getMessagesOfRentInfo(0,limit).size(),
+        assertEquals(service.getMessagesOfRentInfo(0, limit).size(),
                 0);
     }
 
     @Test
     @Transactional
-    public void whenGettingMessageListThenCountRight(){
+    public void whenGettingMessageListThenCountRight() {
         addTestData(10);
 
         setLimit(1, 10);
 
         assertEquals(
-                service.getMessagesOfRentInfo(rentInfo.getRid(),limit).size(),
+                service.getMessagesOfRentInfo(rentInfo.getRid(), limit).size(),
                 10);
     }
 }

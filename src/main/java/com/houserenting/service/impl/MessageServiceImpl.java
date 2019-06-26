@@ -41,16 +41,21 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> getMessagesOfRentInfo(int rid, Limit limit) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("rid",rid);
+        Map<String, Object> map = new HashMap<>();
+        map.put("rid", rid);
         map.put("begin", limit.getBegin());
         map.put("size", limit.getSize());
         List<Message> messages;
-        try{
+        try {
             messages = mapper.getMessagesOfRentInfo(map);
-        }catch (Exception e){
+        } catch (Exception e) {
             messages = new ArrayList<>();
         }
         return messages;
+    }
+
+    @Override
+    public void delete(int mid) {
+        mapper.delete(mid);
     }
 }

@@ -15,9 +15,9 @@ public interface RentInfoService {
 
     int getCount();
 
-    List<RentInfo> getRentInfosByCid(int cid,Limit limit);
+    List<RentInfo> getRentInfosByCid(int cid, Limit limit);
 
-    List<Map<String,Object>> getUnexaminedInfos(Limit limit);
+    List<Map<String, Object>> getUnexaminedInfos(Limit limit);
 
     void examine(int rid);
 }

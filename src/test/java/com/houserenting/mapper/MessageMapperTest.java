@@ -217,4 +217,26 @@ public class MessageMapperTest {
                                 0,
                                 testCustomerNum)).get(3).getContent());
     }
+
+    @Test
+    @Transactional
+    public void messageExistWhenDeleteCountDec() {
+        message.setCustomer(customer);
+        message.setRid(rentInfo.getRid());
+        mapper.add(message);
+
+        int count = mapper.getCount();
+        mapper.delete(message.getMid());
+        assertEquals(count - 1, mapper.getCount());
+    }
+
+    @Test
+    @Transactional
+    public void messageNotExistWhenDeleteCountSame() {
+        int count = mapper.getCount();
+        mapper.delete(0);
+        assertEquals(count, mapper.getCount());
+
+    }
+
 }

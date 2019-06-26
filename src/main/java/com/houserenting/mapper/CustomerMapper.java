@@ -13,8 +13,6 @@ public interface CustomerMapper {
 
     void add(Customer customer);
 
-    void delete(int cid);
-
     void updatePassword(Customer customer);
 
     void updateInfo(Customer customer);

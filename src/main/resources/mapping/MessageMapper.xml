@@ -45,4 +45,10 @@
         values (#{title},#{content},#{time},#{customer.cid},#{rid});
     </insert>
 
+    <delete id="delete" parameterType="int">
+        delete
+        from messages
+        where mid = #{mid}
+    </delete>
+
 </mapper> 
