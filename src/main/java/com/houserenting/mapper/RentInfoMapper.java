@@ -17,4 +17,6 @@ public interface RentInfoMapper {
     int getCount();
 
     List<RentInfo> getRentInfosByCid(Map<String, Object> map);
+
+    void examine(int rid);
 }

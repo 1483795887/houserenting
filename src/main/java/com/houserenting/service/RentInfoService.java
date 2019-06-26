@@ -18,4 +18,6 @@ public interface RentInfoService {
     List<RentInfo> getRentInfosByCid(int cid,Limit limit);
 
     List<Map<String,Object>> getUnexaminedInfos(Limit limit);
+
+    void examine(int rid);
 }

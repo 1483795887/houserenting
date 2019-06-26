@@ -102,4 +102,9 @@ public class RentInfoServiceImpl implements RentInfoService {
         }
         return maps;
     }
+
+    @Override
+    public void examine(int rid) {
+        rentInfoMapper.examine(rid);
+    }
 }

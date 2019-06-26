@@ -259,4 +259,20 @@ public class RentInfoMapperTest {
         assertEquals(unexaminedCount + 100,rentInfos.size());
 
     }
+
+    @Test
+    @Transactional
+    public void unexaminedWhenExaminedThenExamined(){
+        RentInfo rentInfo = new RentInfo();
+        rentInfo.setExamined(RentInfo.UNEXAMED);
+        rentInfo.setCid(customer.getCid());
+
+        rentInfoMapper.add(rentInfo);
+
+        rentInfoMapper.examine(rentInfo.getRid());
+
+        RentInfo rentInfo1 = rentInfoMapper.sel(rentInfo.getRid());
+
+        assertEquals(rentInfo1.getExamined(), RentInfo.EXAMED);
+    }
 }

@@ -76,7 +76,7 @@ public class RentInfoController {
                 }
 
             }
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             msg.failForLackOfParam();
         }
 
@@ -86,18 +86,14 @@ public class RentInfoController {
     @RequestMapping(value = "/rentinfos")
     public Map<String, Object> showRentInfos(@RequestBody Map o) {
         MsgMap msg = new MsgMap();
-        try {
-            Limit limit = Limit.getFromMap(o);
-            if(limit.valid()){
-                List<RentInfo> rentInfoList = rentInfoService.getRentInfos(limit);
-                msg.putSuccessCode();
-                msg.put("list", rentInfoList);
-            }else{
-                msg.failForLimit();
-            }
 
-        } catch (NullPointerException e) {
-            msg.failForLackOfParam();
+        Limit limit = Limit.getFromMap(o);
+        if(limit.valid()){
+            List<RentInfo> rentInfoList = rentInfoService.getRentInfos(limit);
+            msg.putSuccessCode();
+            msg.put("list", rentInfoList);
+        }else{
+            msg.failForLimit();
         }
 
         return msg;
@@ -137,18 +133,14 @@ public class RentInfoController {
     @RequestMapping(value = "/unexamined")
     public Map<String, Object> showUnExaminedRentInfos(@RequestBody Map o) {
         MsgMap msg = new MsgMap();
-        try {
-            Limit limit = Limit.getFromMap(o);
-            if(limit.valid()){
-                List<Map<String,Object>> rentInfoList = rentInfoService.getUnexaminedInfos(limit);
-                msg.putSuccessCode();
-                msg.put("list", rentInfoList);
-            }else{
-                msg.failForLimit();
-            }
 
-        } catch (NullPointerException e) {
-            msg.failForLackOfParam();
+        Limit limit = Limit.getFromMap(o);
+        if(limit.valid()){
+            List<Map<String,Object>> rentInfoList = rentInfoService.getUnexaminedInfos(limit);
+            msg.putSuccessCode();
+            msg.put("list", rentInfoList);
+        }else{
+            msg.failForLimit();
         }
 
         return msg;
@@ -158,8 +150,14 @@ public class RentInfoController {
     @RequestMapping(value = "/examine")
     public Map<String,Object> examine(@RequestBody Map o){
         MsgMap map = new MsgMap();
+        try{
+            int rid = Integer.parseInt((String)o.get("rid"));
+            rentInfoService.examine(rid);
+            map.putSuccessCode();
+        }catch (Exception e){
+            map.failForLackOfParam();
+        }
 
-        map.putSuccessCode();
         return map;
     }
 }

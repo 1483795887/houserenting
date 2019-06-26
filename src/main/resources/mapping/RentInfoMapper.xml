@@ -52,4 +52,7 @@
         #{address},#{pic},#{time},#{examined})
     </insert>
 
+    <update id="examine" parameterType="int">
+        update rent_info set examined=1 where rid=#{rid}
+    </update>
 </mapper> 

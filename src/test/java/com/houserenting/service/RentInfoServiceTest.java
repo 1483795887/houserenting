@@ -148,6 +148,9 @@ public class RentInfoServiceTest {
         int page = 2 + examinedCount / size;
         int newCount = 4 + examinedCount % size;
 
+        if(newCount > size)
+            newCount = size;
+
         setLimit(page, size);
 
         assertEquals(newCount, service.getRentInfos(limit).size());
@@ -229,7 +232,10 @@ public class RentInfoServiceTest {
 
         int size = 6;
         int page = 2 + unexaminedCount / size;
-        int newCount = 4 + unexaminedCount % size;
+        int newCount = 4 + unexaminedCount % size ;
+
+        if(newCount > size)
+            newCount = size;
 
         setLimit(page, size);
 
