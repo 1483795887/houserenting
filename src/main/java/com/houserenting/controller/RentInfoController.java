@@ -136,7 +136,8 @@ public class RentInfoController {
 
         Limit limit = Limit.getFromMap(o);
         if (limit.valid()) {
-            List<Map<String, Object>> rentInfoList = rentInfoService.getUnexaminedInfos(limit);
+            //List<Map<String, Object>> rentInfoList = rentInfoService.getUnexaminedInfos(limit);
+            List<RentInfo> rentInfoList = rentInfoService.getUnexaminedInfos(limit);
             msg.putSuccessCode();
             msg.put("list", rentInfoList);
         } else {

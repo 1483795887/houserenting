@@ -224,7 +224,7 @@ public class RentInfoServiceTest {
         int existCount = service.getCount();
 
         setLimit(1, existCount);
-        List<Map<String, Object>> infos = service.getUnexaminedInfos(limit);
+        List<Map<String, Object>> infos = service.getUnexaminedInfosTest(limit);
         int unexaminedCount = infos.size();
 
         int count = 10;
@@ -239,7 +239,7 @@ public class RentInfoServiceTest {
 
         setLimit(page, size);
 
-        assertEquals(newCount, service.getUnexaminedInfos(limit).size());
+        assertEquals(newCount, service.getUnexaminedInfosTest(limit).size());
     }
 
 }

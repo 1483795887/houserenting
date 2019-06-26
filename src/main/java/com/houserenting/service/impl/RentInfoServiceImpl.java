@@ -89,7 +89,7 @@ public class RentInfoServiceImpl implements RentInfoService {
     }
 
     @Override
-    public List<Map<String, Object>> getUnexaminedInfos(Limit limit) {
+    public List<Map<String, Object>> getUnexaminedInfosTest(Limit limit) {
         List<Map<String, Object>> maps = new ArrayList<>();
         List<RentInfo> infos = getRentInfos(limit, RentInfo.UNEXAMED);
         for (RentInfo info : infos) {
@@ -100,6 +100,11 @@ public class RentInfoServiceImpl implements RentInfoService {
             maps.add(map);
         }
         return maps;
+    }
+
+    @Override
+    public List<RentInfo> getUnexaminedInfos(Limit limit) {
+        return getRentInfos(limit, RentInfo.UNEXAMED);
     }
 
     @Override
